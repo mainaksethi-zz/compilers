@@ -1,0 +1,22 @@
+/* This is 
+a long and 
+multiline comment 
+for assignment 2*/
+int myvar = (2+3*4);
+if(myvar<25)
+{
+	myvar++;
+}
+else if(myvar == 25)
+{
+	printf("yo bhargav");
+}
+else
+{
+	return 0;
+}
+//single line comment
+
+int x = 7.5;
+int 5tor = 100;
+@
