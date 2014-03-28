@@ -1,0 +1,19 @@
+int main()
+{
+	
+	int x;
+
+	if ( a + 5 )
+	{
+		b = 6 * d;
+	}
+
+	while ( i )
+	{
+		i = i + 1;
+
+		break;
+	}  
+
+	return 5;
+}

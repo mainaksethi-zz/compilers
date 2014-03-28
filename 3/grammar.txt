@@ -1,0 +1,20 @@
+arg_list : EPSILON | arg_list1 
+arg_list1 : DATA_TYPE ID arg_list2
+arg_list2 : EPSILON | , DATA_TYPE ID arg_list1
+cmpd_stmt : { stmt_list }
+cond_stmt : IF ( expr ) stmt
+expr : NUM num | ID expr1
+expr1 : identifier | ( param_list ) 
+external_declaration : DATA_TYPE ID external_declaration1 external_declaration | EPSILON
+external_declaration1 :  ; | function_definition
+function_definition : ( arg_list ) { stmt_list }
+identifier : operator expr | EPSILON
+iter_stmt : WHILE ( expr ) stmt | DO stmt WHILE ( expr ) ; | FOR ( expr ; expr ; expr ) stmt
+jmp_stmt : CONTINUE ; | BREAK ; | RETURN expr ; 
+num : operator expr | EPSILON
+operator : + | - | * | / | =
+param_list : EPSILON | param_list1 
+param_list1 : ID param_list2
+param_list2 : EPSILON | , ID param_list1
+stmt : cmpd_stmt | cond_stmt | iter_stmt | jmp_stmt | expr ; | DATA_TYPE ID ;
+stmt_list : stmt stmt_list | EPSILON

@@ -1,0 +1,21 @@
+-------------GRAMMAR
+external_declaration : DATA_TYPE ID external_declaration1 external_declaration | E | 
+external_declaration1 : ; | function_definition | 
+function_definition : ( arg_list ) { stmt_list } | 
+arg_list : E | arg_list1 | 
+arg_list1 : DATA_TYPE ID arg_list2 | 
+arg_list2 : E | , DATA_TYPE ID arg_list1 | 
+stmt_list : stmt stmt_list | E | 
+stmt : cmpd_stmt | cond_stmt | iter_stmt | jmp_stmt | expr ; | DATA_TYPE ID ; | 
+param_list : E | param_list1 | 
+param_list1 : ID param_list2 | 
+param_list2 : E | , ID param_list1 | 
+cmpd_stmt : { stmt_list } | 
+cond_stmt : IF ( expr ) stmt | 
+iter_stmt : WHILE ( expr ) stmt | DO stmt WHILE ( expr ) ; | FOR ( expr ; expr ; expr ) stmt | 
+jmp_stmt : CONTINUE ; | BREAK ; | RETURN expr ; | 
+expr : NUM num | ID expr1 | 
+expr1 : identifier | ( param_list ) | 
+num : operator expr | E | 
+identifier : operator expr | E | 
+operator : + | - | * | / | = | 
