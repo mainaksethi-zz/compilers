@@ -1,0 +1,2145 @@
+Terminals unused in grammar
+
+   RIGHT_OP
+   LEFT_OP
+   INC_OP
+   DEC_OP
+   PTR_OP
+   EQ_OP
+   NE_OP
+   CHAR_LIT
+   STRING
+
+
+Rules useless in parser due to conflicts
+
+   64 logical_op: error
+
+   70 binary_op: error
+
+   81 number: error
+
+
+State 13 conflicts: 2 reduce/reduce
+State 19 conflicts: 1 shift/reduce
+State 21 conflicts: 15 reduce/reduce
+State 25 conflicts: 1 shift/reduce
+State 26 conflicts: 1 shift/reduce
+State 34 conflicts: 4 reduce/reduce
+State 60 conflicts: 1 shift/reduce
+State 61 conflicts: 4 reduce/reduce
+State 68 conflicts: 1 shift/reduce
+State 77 conflicts: 1 shift/reduce
+State 84 conflicts: 2 shift/reduce
+State 87 conflicts: 1 shift/reduce
+State 90 conflicts: 1 shift/reduce
+State 91 conflicts: 27 reduce/reduce
+State 100 conflicts: 2 shift/reduce
+State 104 conflicts: 1 shift/reduce
+State 117 conflicts: 15 reduce/reduce
+State 121 conflicts: 14 reduce/reduce
+State 135 conflicts: 2 reduce/reduce
+State 140 conflicts: 1 shift/reduce
+
+
+Grammar
+
+    0 $accept: strt $end
+
+    1 strt: /* empty */
+    2     | external_declaration strt
+
+    3 external_declaration: function_definition
+    4                     | declaration
+
+    5 declaration: data_type id semi
+    6            | data_type id '=' expr semi
+    7            | data_type id left_bracket integer right_bracket semi
+
+    8 declaration_list: declaration
+    9                 | declaration declaration_list
+
+   10 function_definition: data_type id left_parenthesis arg_list right_parenthesis compound_stmts
+
+   11 arg_list: /* empty */
+   12         | data_type id
+   13         | data_type id comma arg_list
+
+   14 param_list: /* empty */
+   15           | id
+   16           | id comma param_list
+
+   17 compound_stmts: left_brace right_brace
+   18               | left_brace stmt_list right_brace
+
+   19 stmt_list: /* empty */
+   20          | stmt stmt_list
+
+   21 stmt: declaration_list
+   22     | compound_stmts
+   23     | conditional_stmt
+   24     | iteration_stmt
+   25     | jump_stmt
+   26     | expr semi
+
+   27 conditional_stmt: IF left_parenthesis expr right_parenthesis stmt
+   28                 | IF left_parenthesis expr right_parenthesis stmt ELSE stmt
+
+   29 iteration_stmt: WHILE left_parenthesis expr right_parenthesis stmt
+   30               | DO stmt WHILE left_parenthesis expr right_parenthesis semi
+   31               | FOR left_parenthesis expr semi expr semi expr right_parenthesis stmt
+
+   32 jump_stmt: CONTINUE semi
+   33          | BREAK semi
+   34          | RETURN semi
+   35          | RETURN expr semi
+
+   36 expr: number
+   37     | id
+   38     | number binary_op expr
+   39     | id binary_op expr
+   40     | id dassignment_op expr
+   41     | number relational_op expr
+   42     | id relational_op expr
+   43     | number logical_op expr
+   44     | id logical_op expr
+   45     | id left_parenthesis param_list right_parenthesis
+
+   46 dassignment_op: '='
+   47               | MUL_ASSIGN
+   48               | DIV_ASSIGN
+   49               | MOD_ASSIGN
+   50               | ADD_ASSIGN
+   51               | SUB_ASSIGN
+   52               | AND_ASSIGN
+   53               | XOR_ASSIGN
+   54               | OR_ASSIGN
+   55               | error
+
+   56 relational_op: '<'
+   57              | '>'
+   58              | LE_OP
+   59              | GE_OP
+   60              | error
+
+   61 logical_op: '!'
+   62           | AND_OP
+   63           | OR_OP
+   64           | error
+
+   65 binary_op: '+'
+   66          | '-'
+   67          | '*'
+   68          | '/'
+   69          | '%'
+   70          | error
+
+   71 semi: ';'
+   72     | error
+
+   73 data_type: DATA_TYPE
+   74          | error
+
+   75 id: ID
+   76   | error
+
+   77 integer: INTEGER
+   78        | error
+
+   79 number: INTEGER
+   80       | FLOATING_POINT
+   81       | error
+
+   82 left_parenthesis: '('
+   83                 | error
+
+   84 right_parenthesis: ')'
+   85                  | error
+
+   86 left_brace: '{'
+   87           | error
+
+   88 right_brace: '}'
+   89            | error
+
+   90 left_bracket: '['
+   91             | error
+
+   92 right_bracket: ']'
+   93              | error
+
+   94 comma: ','
+   95      | error
+
+
+Terminals, with rules where they appear
+
+$end (0) 0
+'!' (33) 61
+'%' (37) 69
+'(' (40) 82
+')' (41) 84
+'*' (42) 67
+'+' (43) 65
+',' (44) 94
+'-' (45) 66
+'/' (47) 68
+';' (59) 71
+'<' (60) 56
+'=' (61) 6 46
+'>' (62) 57
+'[' (91) 90
+']' (93) 92
+'{' (123) 86
+'}' (125) 88
+error (256) 55 60 64 70 72 74 76 78 81 83 85 87 89 91 93 95
+ADD_ASSIGN (258) 50
+SUB_ASSIGN (259) 51
+MUL_ASSIGN (260) 47
+DIV_ASSIGN (261) 48
+MOD_ASSIGN (262) 49
+AND_ASSIGN (263) 52
+XOR_ASSIGN (264) 53
+OR_ASSIGN (265) 54
+RIGHT_OP (266)
+LEFT_OP (267)
+INC_OP (268)
+DEC_OP (269)
+PTR_OP (270)
+AND_OP (271) 62
+OR_OP (272) 63
+LE_OP (273) 58
+GE_OP (274) 59
+EQ_OP (275)
+NE_OP (276)
+ID (277) 75
+DATA_TYPE (278) 73
+IF (279) 27 28
+ELSE (280) 28
+WHILE (281) 29 30
+FOR (282) 31
+DO (283) 30
+CONTINUE (284) 32
+BREAK (285) 33
+RETURN (286) 34 35
+FLOATING_POINT (287) 80
+INTEGER (288) 77 79
+CHAR_LIT (289)
+STRING (290)
+
+
+Nonterminals, with rules where they appear
+
+$accept (53)
+    on left: 0
+strt (54)
+    on left: 1 2, on right: 0 2
+external_declaration (55)
+    on left: 3 4, on right: 2
+declaration (56)
+    on left: 5 6 7, on right: 4 8 9
+declaration_list (57)
+    on left: 8 9, on right: 9 21
+function_definition (58)
+    on left: 10, on right: 3
+arg_list (59)
+    on left: 11 12 13, on right: 10 13
+param_list (60)
+    on left: 14 15 16, on right: 16 45
+compound_stmts (61)
+    on left: 17 18, on right: 10 22
+stmt_list (62)
+    on left: 19 20, on right: 18 20
+stmt (63)
+    on left: 21 22 23 24 25 26, on right: 20 27 28 29 30 31
+conditional_stmt (64)
+    on left: 27 28, on right: 23
+iteration_stmt (65)
+    on left: 29 30 31, on right: 24
+jump_stmt (66)
+    on left: 32 33 34 35, on right: 25
+expr (67)
+    on left: 36 37 38 39 40 41 42 43 44 45, on right: 6 26 27 28 29
+    30 31 35 38 39 40 41 42 43 44
+dassignment_op (68)
+    on left: 46 47 48 49 50 51 52 53 54 55, on right: 40
+relational_op (69)
+    on left: 56 57 58 59 60, on right: 41 42
+logical_op (70)
+    on left: 61 62 63 64, on right: 43 44
+binary_op (71)
+    on left: 65 66 67 68 69 70, on right: 38 39
+semi (72)
+    on left: 71 72, on right: 5 6 7 26 30 31 32 33 34 35
+data_type (73)
+    on left: 73 74, on right: 5 6 7 10 12 13
+id (74)
+    on left: 75 76, on right: 5 6 7 10 12 13 15 16 37 39 40 42 44 45
+integer (75)
+    on left: 77 78, on right: 7
+number (76)
+    on left: 79 80 81, on right: 36 38 41 43
+left_parenthesis (77)
+    on left: 82 83, on right: 10 27 28 29 30 31 45
+right_parenthesis (78)
+    on left: 84 85, on right: 10 27 28 29 30 31 45
+left_brace (79)
+    on left: 86 87, on right: 17 18
+right_brace (80)
+    on left: 88 89, on right: 17 18
+left_bracket (81)
+    on left: 90 91, on right: 7
+right_bracket (82)
+    on left: 92 93, on right: 7
+comma (83)
+    on left: 94 95, on right: 13 16
+
+
+State 0
+
+    0 $accept: . strt $end
+
+    error      shift, and go to state 1
+    DATA_TYPE  shift, and go to state 2
+
+    $end  reduce using rule 1 (strt)
+
+    strt                  go to state 3
+    external_declaration  go to state 4
+    declaration           go to state 5
+    function_definition   go to state 6
+    data_type             go to state 7
+
+
+State 1
+
+   74 data_type: error .
+
+    $default  reduce using rule 74 (data_type)
+
+
+State 2
+
+   73 data_type: DATA_TYPE .
+
+    $default  reduce using rule 73 (data_type)
+
+
+State 3
+
+    0 $accept: strt . $end
+
+    $end  shift, and go to state 8
+
+
+State 4
+
+    2 strt: external_declaration . strt
+
+    error      shift, and go to state 1
+    DATA_TYPE  shift, and go to state 2
+
+    $end  reduce using rule 1 (strt)
+
+    strt                  go to state 9
+    external_declaration  go to state 4
+    declaration           go to state 5
+    function_definition   go to state 6
+    data_type             go to state 7
+
+
+State 5
+
+    4 external_declaration: declaration .
+
+    $default  reduce using rule 4 (external_declaration)
+
+
+State 6
+
+    3 external_declaration: function_definition .
+
+    $default  reduce using rule 3 (external_declaration)
+
+
+State 7
+
+    5 declaration: data_type . id semi
+    6            | data_type . id '=' expr semi
+    7            | data_type . id left_bracket integer right_bracket semi
+   10 function_definition: data_type . id left_parenthesis arg_list right_parenthesis compound_stmts
+
+    error  shift, and go to state 10
+    ID     shift, and go to state 11
+
+    id  go to state 12
+
+
+State 8
+
+    0 $accept: strt $end .
+
+    $default  accept
+
+
+State 9
+
+    2 strt: external_declaration strt .
+
+    $default  reduce using rule 2 (strt)
+
+
+State 10
+
+   76 id: error .
+
+    $default  reduce using rule 76 (id)
+
+
+State 11
+
+   75 id: ID .
+
+    $default  reduce using rule 75 (id)
+
+
+State 12
+
+    5 declaration: data_type id . semi
+    6            | data_type id . '=' expr semi
+    7            | data_type id . left_bracket integer right_bracket semi
+   10 function_definition: data_type id . left_parenthesis arg_list right_parenthesis compound_stmts
+
+    error  shift, and go to state 13
+    '='    shift, and go to state 14
+    ';'    shift, and go to state 15
+    '('    shift, and go to state 16
+    '['    shift, and go to state 17
+
+    semi              go to state 18
+    left_parenthesis  go to state 19
+    left_bracket      go to state 20
+
+
+State 13
+
+   72 semi: error .
+   83 left_parenthesis: error .
+   91 left_bracket: error .
+
+    error      reduce using rule 72 (semi)
+    error      [reduce using rule 83 (left_parenthesis)]
+    error      [reduce using rule 91 (left_bracket)]
+    DATA_TYPE  reduce using rule 72 (semi)
+    DATA_TYPE  [reduce using rule 83 (left_parenthesis)]
+    INTEGER    reduce using rule 91 (left_bracket)
+    ')'        reduce using rule 83 (left_parenthesis)
+    $default   reduce using rule 72 (semi)
+
+
+State 14
+
+    6 declaration: data_type id '=' . expr semi
+
+    error           shift, and go to state 21
+    ID              shift, and go to state 11
+    FLOATING_POINT  shift, and go to state 22
+    INTEGER         shift, and go to state 23
+
+    expr    go to state 24
+    id      go to state 25
+    number  go to state 26
+
+
+State 15
+
+   71 semi: ';' .
+
+    $default  reduce using rule 71 (semi)
+
+
+State 16
+
+   82 left_parenthesis: '(' .
+
+    $default  reduce using rule 82 (left_parenthesis)
+
+
+State 17
+
+   90 left_bracket: '[' .
+
+    $default  reduce using rule 90 (left_bracket)
+
+
+State 18
+
+    5 declaration: data_type id semi .
+
+    $default  reduce using rule 5 (declaration)
+
+
+State 19
+
+   10 function_definition: data_type id left_parenthesis . arg_list right_parenthesis compound_stmts
+
+    error      shift, and go to state 1
+    DATA_TYPE  shift, and go to state 2
+
+    error  [reduce using rule 11 (arg_list)]
+    ')'    reduce using rule 11 (arg_list)
+
+    arg_list   go to state 27
+    data_type  go to state 28
+
+
+State 20
+
+    7 declaration: data_type id left_bracket . integer right_bracket semi
+
+    error    shift, and go to state 29
+    INTEGER  shift, and go to state 30
+
+    integer  go to state 31
+
+
+State 21
+
+   76 id: error .
+   81 number: error .
+
+    error     reduce using rule 76 (id)
+    error     [reduce using rule 81 (number)]
+    AND_OP    reduce using rule 76 (id)
+    AND_OP    [reduce using rule 81 (number)]
+    OR_OP     reduce using rule 76 (id)
+    OR_OP     [reduce using rule 81 (number)]
+    LE_OP     reduce using rule 76 (id)
+    LE_OP     [reduce using rule 81 (number)]
+    GE_OP     reduce using rule 76 (id)
+    GE_OP     [reduce using rule 81 (number)]
+    '<'       reduce using rule 76 (id)
+    '<'       [reduce using rule 81 (number)]
+    '>'       reduce using rule 76 (id)
+    '>'       [reduce using rule 81 (number)]
+    '!'       reduce using rule 76 (id)
+    '!'       [reduce using rule 81 (number)]
+    '+'       reduce using rule 76 (id)
+    '+'       [reduce using rule 81 (number)]
+    '-'       reduce using rule 76 (id)
+    '-'       [reduce using rule 81 (number)]
+    '*'       reduce using rule 76 (id)
+    '*'       [reduce using rule 81 (number)]
+    '/'       reduce using rule 76 (id)
+    '/'       [reduce using rule 81 (number)]
+    '%'       reduce using rule 76 (id)
+    '%'       [reduce using rule 81 (number)]
+    ';'       reduce using rule 76 (id)
+    ';'       [reduce using rule 81 (number)]
+    ')'       reduce using rule 76 (id)
+    ')'       [reduce using rule 81 (number)]
+    $default  reduce using rule 76 (id)
+
+
+State 22
+
+   80 number: FLOATING_POINT .
+
+    $default  reduce using rule 80 (number)
+
+
+State 23
+
+   79 number: INTEGER .
+
+    $default  reduce using rule 79 (number)
+
+
+State 24
+
+    6 declaration: data_type id '=' expr . semi
+
+    error  shift, and go to state 32
+    ';'    shift, and go to state 15
+
+    semi  go to state 33
+
+
+State 25
+
+   37 expr: id .
+   39     | id . binary_op expr
+   40     | id . dassignment_op expr
+   42     | id . relational_op expr
+   44     | id . logical_op expr
+   45     | id . left_parenthesis param_list right_parenthesis
+
+    error       shift, and go to state 34
+    ADD_ASSIGN  shift, and go to state 35
+    SUB_ASSIGN  shift, and go to state 36
+    MUL_ASSIGN  shift, and go to state 37
+    DIV_ASSIGN  shift, and go to state 38
+    MOD_ASSIGN  shift, and go to state 39
+    AND_ASSIGN  shift, and go to state 40
+    XOR_ASSIGN  shift, and go to state 41
+    OR_ASSIGN   shift, and go to state 42
+    AND_OP      shift, and go to state 43
+    OR_OP       shift, and go to state 44
+    LE_OP       shift, and go to state 45
+    GE_OP       shift, and go to state 46
+    '='         shift, and go to state 47
+    '<'         shift, and go to state 48
+    '>'         shift, and go to state 49
+    '!'         shift, and go to state 50
+    '+'         shift, and go to state 51
+    '-'         shift, and go to state 52
+    '*'         shift, and go to state 53
+    '/'         shift, and go to state 54
+    '%'         shift, and go to state 55
+    '('         shift, and go to state 16
+
+    error  [reduce using rule 37 (expr)]
+    ';'    reduce using rule 37 (expr)
+    ')'    reduce using rule 37 (expr)
+
+    dassignment_op    go to state 56
+    relational_op     go to state 57
+    logical_op        go to state 58
+    binary_op         go to state 59
+    left_parenthesis  go to state 60
+
+
+State 26
+
+   36 expr: number .
+   38     | number . binary_op expr
+   41     | number . relational_op expr
+   43     | number . logical_op expr
+
+    error   shift, and go to state 61
+    AND_OP  shift, and go to state 43
+    OR_OP   shift, and go to state 44
+    LE_OP   shift, and go to state 45
+    GE_OP   shift, and go to state 46
+    '<'     shift, and go to state 48
+    '>'     shift, and go to state 49
+    '!'     shift, and go to state 50
+    '+'     shift, and go to state 51
+    '-'     shift, and go to state 52
+    '*'     shift, and go to state 53
+    '/'     shift, and go to state 54
+    '%'     shift, and go to state 55
+
+    error  [reduce using rule 36 (expr)]
+    ';'    reduce using rule 36 (expr)
+    ')'    reduce using rule 36 (expr)
+
+    relational_op  go to state 62
+    logical_op     go to state 63
+    binary_op      go to state 64
+
+
+State 27
+
+   10 function_definition: data_type id left_parenthesis arg_list . right_parenthesis compound_stmts
+
+    error  shift, and go to state 65
+    ')'    shift, and go to state 66
+
+    right_parenthesis  go to state 67
+
+
+State 28
+
+   12 arg_list: data_type . id
+   13         | data_type . id comma arg_list
+
+    error  shift, and go to state 10
+    ID     shift, and go to state 11
+
+    id  go to state 68
+
+
+State 29
+
+   78 integer: error .
+
+    $default  reduce using rule 78 (integer)
+
+
+State 30
+
+   77 integer: INTEGER .
+
+    $default  reduce using rule 77 (integer)
+
+
+State 31
+
+    7 declaration: data_type id left_bracket integer . right_bracket semi
+
+    error  shift, and go to state 69
+    ']'    shift, and go to state 70
+
+    right_bracket  go to state 71
+
+
+State 32
+
+   72 semi: error .
+
+    $default  reduce using rule 72 (semi)
+
+
+State 33
+
+    6 declaration: data_type id '=' expr semi .
+
+    $default  reduce using rule 6 (declaration)
+
+
+State 34
+
+   55 dassignment_op: error .
+   60 relational_op: error .
+   64 logical_op: error .
+   70 binary_op: error .
+   83 left_parenthesis: error .
+
+    error           reduce using rule 55 (dassignment_op)
+    error           [reduce using rule 60 (relational_op)]
+    error           [reduce using rule 64 (logical_op)]
+    error           [reduce using rule 70 (binary_op)]
+    error           [reduce using rule 83 (left_parenthesis)]
+    ID              reduce using rule 55 (dassignment_op)
+    ID              [reduce using rule 60 (relational_op)]
+    ID              [reduce using rule 64 (logical_op)]
+    ID              [reduce using rule 70 (binary_op)]
+    ID              [reduce using rule 83 (left_parenthesis)]
+    FLOATING_POINT  reduce using rule 55 (dassignment_op)
+    FLOATING_POINT  [reduce using rule 60 (relational_op)]
+    FLOATING_POINT  [reduce using rule 64 (logical_op)]
+    FLOATING_POINT  [reduce using rule 70 (binary_op)]
+    INTEGER         reduce using rule 55 (dassignment_op)
+    INTEGER         [reduce using rule 60 (relational_op)]
+    INTEGER         [reduce using rule 64 (logical_op)]
+    INTEGER         [reduce using rule 70 (binary_op)]
+    ')'             reduce using rule 83 (left_parenthesis)
+    $default        reduce using rule 55 (dassignment_op)
+
+
+State 35
+
+   50 dassignment_op: ADD_ASSIGN .
+
+    $default  reduce using rule 50 (dassignment_op)
+
+
+State 36
+
+   51 dassignment_op: SUB_ASSIGN .
+
+    $default  reduce using rule 51 (dassignment_op)
+
+
+State 37
+
+   47 dassignment_op: MUL_ASSIGN .
+
+    $default  reduce using rule 47 (dassignment_op)
+
+
+State 38
+
+   48 dassignment_op: DIV_ASSIGN .
+
+    $default  reduce using rule 48 (dassignment_op)
+
+
+State 39
+
+   49 dassignment_op: MOD_ASSIGN .
+
+    $default  reduce using rule 49 (dassignment_op)
+
+
+State 40
+
+   52 dassignment_op: AND_ASSIGN .
+
+    $default  reduce using rule 52 (dassignment_op)
+
+
+State 41
+
+   53 dassignment_op: XOR_ASSIGN .
+
+    $default  reduce using rule 53 (dassignment_op)
+
+
+State 42
+
+   54 dassignment_op: OR_ASSIGN .
+
+    $default  reduce using rule 54 (dassignment_op)
+
+
+State 43
+
+   62 logical_op: AND_OP .
+
+    $default  reduce using rule 62 (logical_op)
+
+
+State 44
+
+   63 logical_op: OR_OP .
+
+    $default  reduce using rule 63 (logical_op)
+
+
+State 45
+
+   58 relational_op: LE_OP .
+
+    $default  reduce using rule 58 (relational_op)
+
+
+State 46
+
+   59 relational_op: GE_OP .
+
+    $default  reduce using rule 59 (relational_op)
+
+
+State 47
+
+   46 dassignment_op: '=' .
+
+    $default  reduce using rule 46 (dassignment_op)
+
+
+State 48
+
+   56 relational_op: '<' .
+
+    $default  reduce using rule 56 (relational_op)
+
+
+State 49
+
+   57 relational_op: '>' .
+
+    $default  reduce using rule 57 (relational_op)
+
+
+State 50
+
+   61 logical_op: '!' .
+
+    $default  reduce using rule 61 (logical_op)
+
+
+State 51
+
+   65 binary_op: '+' .
+
+    $default  reduce using rule 65 (binary_op)
+
+
+State 52
+
+   66 binary_op: '-' .
+
+    $default  reduce using rule 66 (binary_op)
+
+
+State 53
+
+   67 binary_op: '*' .
+
+    $default  reduce using rule 67 (binary_op)
+
+
+State 54
+
+   68 binary_op: '/' .
+
+    $default  reduce using rule 68 (binary_op)
+
+
+State 55
+
+   69 binary_op: '%' .
+
+    $default  reduce using rule 69 (binary_op)
+
+
+State 56
+
+   40 expr: id dassignment_op . expr
+
+    error           shift, and go to state 21
+    ID              shift, and go to state 11
+    FLOATING_POINT  shift, and go to state 22
+    INTEGER         shift, and go to state 23
+
+    expr    go to state 72
+    id      go to state 25
+    number  go to state 26
+
+
+State 57
+
+   42 expr: id relational_op . expr
+
+    error           shift, and go to state 21
+    ID              shift, and go to state 11
+    FLOATING_POINT  shift, and go to state 22
+    INTEGER         shift, and go to state 23
+
+    expr    go to state 73
+    id      go to state 25
+    number  go to state 26
+
+
+State 58
+
+   44 expr: id logical_op . expr
+
+    error           shift, and go to state 21
+    ID              shift, and go to state 11
+    FLOATING_POINT  shift, and go to state 22
+    INTEGER         shift, and go to state 23
+
+    expr    go to state 74
+    id      go to state 25
+    number  go to state 26
+
+
+State 59
+
+   39 expr: id binary_op . expr
+
+    error           shift, and go to state 21
+    ID              shift, and go to state 11
+    FLOATING_POINT  shift, and go to state 22
+    INTEGER         shift, and go to state 23
+
+    expr    go to state 75
+    id      go to state 25
+    number  go to state 26
+
+
+State 60
+
+   45 expr: id left_parenthesis . param_list right_parenthesis
+
+    error  shift, and go to state 10
+    ID     shift, and go to state 11
+
+    error  [reduce using rule 14 (param_list)]
+    ')'    reduce using rule 14 (param_list)
+
+    param_list  go to state 76
+    id          go to state 77
+
+
+State 61
+
+   60 relational_op: error .
+   64 logical_op: error .
+   70 binary_op: error .
+
+    error           reduce using rule 60 (relational_op)
+    error           [reduce using rule 64 (logical_op)]
+    error           [reduce using rule 70 (binary_op)]
+    ID              reduce using rule 60 (relational_op)
+    ID              [reduce using rule 64 (logical_op)]
+    ID              [reduce using rule 70 (binary_op)]
+    FLOATING_POINT  reduce using rule 60 (relational_op)
+    FLOATING_POINT  [reduce using rule 64 (logical_op)]
+    FLOATING_POINT  [reduce using rule 70 (binary_op)]
+    INTEGER         reduce using rule 60 (relational_op)
+    INTEGER         [reduce using rule 64 (logical_op)]
+    INTEGER         [reduce using rule 70 (binary_op)]
+    $default        reduce using rule 60 (relational_op)
+
+
+State 62
+
+   41 expr: number relational_op . expr
+
+    error           shift, and go to state 21
+    ID              shift, and go to state 11
+    FLOATING_POINT  shift, and go to state 22
+    INTEGER         shift, and go to state 23
+
+    expr    go to state 78
+    id      go to state 25
+    number  go to state 26
+
+
+State 63
+
+   43 expr: number logical_op . expr
+
+    error           shift, and go to state 21
+    ID              shift, and go to state 11
+    FLOATING_POINT  shift, and go to state 22
+    INTEGER         shift, and go to state 23
+
+    expr    go to state 79
+    id      go to state 25
+    number  go to state 26
+
+
+State 64
+
+   38 expr: number binary_op . expr
+
+    error           shift, and go to state 21
+    ID              shift, and go to state 11
+    FLOATING_POINT  shift, and go to state 22
+    INTEGER         shift, and go to state 23
+
+    expr    go to state 80
+    id      go to state 25
+    number  go to state 26
+
+
+State 65
+
+   85 right_parenthesis: error .
+
+    $default  reduce using rule 85 (right_parenthesis)
+
+
+State 66
+
+   84 right_parenthesis: ')' .
+
+    $default  reduce using rule 84 (right_parenthesis)
+
+
+State 67
+
+   10 function_definition: data_type id left_parenthesis arg_list right_parenthesis . compound_stmts
+
+    error  shift, and go to state 81
+    '{'    shift, and go to state 82
+
+    compound_stmts  go to state 83
+    left_brace      go to state 84
+
+
+State 68
+
+   12 arg_list: data_type id .
+   13         | data_type id . comma arg_list
+
+    error  shift, and go to state 85
+    ','    shift, and go to state 86
+
+    error  [reduce using rule 12 (arg_list)]
+    ')'    reduce using rule 12 (arg_list)
+
+    comma  go to state 87
+
+
+State 69
+
+   93 right_bracket: error .
+
+    $default  reduce using rule 93 (right_bracket)
+
+
+State 70
+
+   92 right_bracket: ']' .
+
+    $default  reduce using rule 92 (right_bracket)
+
+
+State 71
+
+    7 declaration: data_type id left_bracket integer right_bracket . semi
+
+    error  shift, and go to state 32
+    ';'    shift, and go to state 15
+
+    semi  go to state 88
+
+
+State 72
+
+   40 expr: id dassignment_op expr .
+
+    $default  reduce using rule 40 (expr)
+
+
+State 73
+
+   42 expr: id relational_op expr .
+
+    $default  reduce using rule 42 (expr)
+
+
+State 74
+
+   44 expr: id logical_op expr .
+
+    $default  reduce using rule 44 (expr)
+
+
+State 75
+
+   39 expr: id binary_op expr .
+
+    $default  reduce using rule 39 (expr)
+
+
+State 76
+
+   45 expr: id left_parenthesis param_list . right_parenthesis
+
+    error  shift, and go to state 65
+    ')'    shift, and go to state 66
+
+    right_parenthesis  go to state 89
+
+
+State 77
+
+   15 param_list: id .
+   16           | id . comma param_list
+
+    error  shift, and go to state 85
+    ','    shift, and go to state 86
+
+    error  [reduce using rule 15 (param_list)]
+    ')'    reduce using rule 15 (param_list)
+
+    comma  go to state 90
+
+
+State 78
+
+   41 expr: number relational_op expr .
+
+    $default  reduce using rule 41 (expr)
+
+
+State 79
+
+   43 expr: number logical_op expr .
+
+    $default  reduce using rule 43 (expr)
+
+
+State 80
+
+   38 expr: number binary_op expr .
+
+    $default  reduce using rule 38 (expr)
+
+
+State 81
+
+   87 left_brace: error .
+
+    $default  reduce using rule 87 (left_brace)
+
+
+State 82
+
+   86 left_brace: '{' .
+
+    $default  reduce using rule 86 (left_brace)
+
+
+State 83
+
+   10 function_definition: data_type id left_parenthesis arg_list right_parenthesis compound_stmts .
+
+    $default  reduce using rule 10 (function_definition)
+
+
+State 84
+
+   17 compound_stmts: left_brace . right_brace
+   18               | left_brace . stmt_list right_brace
+
+    error           shift, and go to state 91
+    ID              shift, and go to state 11
+    DATA_TYPE       shift, and go to state 2
+    IF              shift, and go to state 92
+    WHILE           shift, and go to state 93
+    FOR             shift, and go to state 94
+    DO              shift, and go to state 95
+    CONTINUE        shift, and go to state 96
+    BREAK           shift, and go to state 97
+    RETURN          shift, and go to state 98
+    FLOATING_POINT  shift, and go to state 22
+    INTEGER         shift, and go to state 23
+    '{'             shift, and go to state 82
+    '}'             shift, and go to state 99
+
+    error  [reduce using rule 19 (stmt_list)]
+    '}'    [reduce using rule 19 (stmt_list)]
+
+    declaration       go to state 100
+    declaration_list  go to state 101
+    compound_stmts    go to state 102
+    stmt_list         go to state 103
+    stmt              go to state 104
+    conditional_stmt  go to state 105
+    iteration_stmt    go to state 106
+    jump_stmt         go to state 107
+    expr              go to state 108
+    data_type         go to state 109
+    id                go to state 25
+    number            go to state 26
+    left_brace        go to state 84
+    right_brace       go to state 110
+
+
+State 85
+
+   95 comma: error .
+
+    $default  reduce using rule 95 (comma)
+
+
+State 86
+
+   94 comma: ',' .
+
+    $default  reduce using rule 94 (comma)
+
+
+State 87
+
+   13 arg_list: data_type id comma . arg_list
+
+    error      shift, and go to state 1
+    DATA_TYPE  shift, and go to state 2
+
+    error  [reduce using rule 11 (arg_list)]
+    ')'    reduce using rule 11 (arg_list)
+
+    arg_list   go to state 111
+    data_type  go to state 28
+
+
+State 88
+
+    7 declaration: data_type id left_bracket integer right_bracket semi .
+
+    $default  reduce using rule 7 (declaration)
+
+
+State 89
+
+   45 expr: id left_parenthesis param_list right_parenthesis .
+
+    $default  reduce using rule 45 (expr)
+
+
+State 90
+
+   16 param_list: id comma . param_list
+
+    error  shift, and go to state 10
+    ID     shift, and go to state 11
+
+    error  [reduce using rule 14 (param_list)]
+    ')'    reduce using rule 14 (param_list)
+
+    param_list  go to state 112
+    id          go to state 77
+
+
+State 91
+
+   74 data_type: error .
+   76 id: error .
+   81 number: error .
+   87 left_brace: error .
+   89 right_brace: error .
+
+    $end            reduce using rule 89 (right_brace)
+    error           reduce using rule 74 (data_type)
+    error           [reduce using rule 76 (id)]
+    error           [reduce using rule 81 (number)]
+    error           [reduce using rule 87 (left_brace)]
+    error           [reduce using rule 89 (right_brace)]
+    AND_OP          reduce using rule 76 (id)
+    AND_OP          [reduce using rule 81 (number)]
+    OR_OP           reduce using rule 76 (id)
+    OR_OP           [reduce using rule 81 (number)]
+    LE_OP           reduce using rule 76 (id)
+    LE_OP           [reduce using rule 81 (number)]
+    GE_OP           reduce using rule 76 (id)
+    GE_OP           [reduce using rule 81 (number)]
+    ID              reduce using rule 74 (data_type)
+    ID              [reduce using rule 87 (left_brace)]
+    ID              [reduce using rule 89 (right_brace)]
+    DATA_TYPE       reduce using rule 87 (left_brace)
+    DATA_TYPE       [reduce using rule 89 (right_brace)]
+    IF              reduce using rule 87 (left_brace)
+    IF              [reduce using rule 89 (right_brace)]
+    ELSE            reduce using rule 89 (right_brace)
+    WHILE           reduce using rule 87 (left_brace)
+    WHILE           [reduce using rule 89 (right_brace)]
+    FOR             reduce using rule 87 (left_brace)
+    FOR             [reduce using rule 89 (right_brace)]
+    DO              reduce using rule 87 (left_brace)
+    DO              [reduce using rule 89 (right_brace)]
+    CONTINUE        reduce using rule 87 (left_brace)
+    CONTINUE        [reduce using rule 89 (right_brace)]
+    BREAK           reduce using rule 87 (left_brace)
+    BREAK           [reduce using rule 89 (right_brace)]
+    RETURN          reduce using rule 87 (left_brace)
+    RETURN          [reduce using rule 89 (right_brace)]
+    FLOATING_POINT  reduce using rule 87 (left_brace)
+    FLOATING_POINT  [reduce using rule 89 (right_brace)]
+    INTEGER         reduce using rule 87 (left_brace)
+    INTEGER         [reduce using rule 89 (right_brace)]
+    '<'             reduce using rule 76 (id)
+    '<'             [reduce using rule 81 (number)]
+    '>'             reduce using rule 76 (id)
+    '>'             [reduce using rule 81 (number)]
+    '!'             reduce using rule 76 (id)
+    '!'             [reduce using rule 81 (number)]
+    '+'             reduce using rule 76 (id)
+    '+'             [reduce using rule 81 (number)]
+    '-'             reduce using rule 76 (id)
+    '-'             [reduce using rule 81 (number)]
+    '*'             reduce using rule 76 (id)
+    '*'             [reduce using rule 81 (number)]
+    '/'             reduce using rule 76 (id)
+    '/'             [reduce using rule 81 (number)]
+    '%'             reduce using rule 76 (id)
+    '%'             [reduce using rule 81 (number)]
+    ';'             reduce using rule 76 (id)
+    ';'             [reduce using rule 81 (number)]
+    '{'             reduce using rule 87 (left_brace)
+    '{'             [reduce using rule 89 (right_brace)]
+    '}'             reduce using rule 87 (left_brace)
+    '}'             [reduce using rule 89 (right_brace)]
+    $default        reduce using rule 76 (id)
+
+
+State 92
+
+   27 conditional_stmt: IF . left_parenthesis expr right_parenthesis stmt
+   28                 | IF . left_parenthesis expr right_parenthesis stmt ELSE stmt
+
+    error  shift, and go to state 113
+    '('    shift, and go to state 16
+
+    left_parenthesis  go to state 114
+
+
+State 93
+
+   29 iteration_stmt: WHILE . left_parenthesis expr right_parenthesis stmt
+
+    error  shift, and go to state 113
+    '('    shift, and go to state 16
+
+    left_parenthesis  go to state 115
+
+
+State 94
+
+   31 iteration_stmt: FOR . left_parenthesis expr semi expr semi expr right_parenthesis stmt
+
+    error  shift, and go to state 113
+    '('    shift, and go to state 16
+
+    left_parenthesis  go to state 116
+
+
+State 95
+
+   30 iteration_stmt: DO . stmt WHILE left_parenthesis expr right_parenthesis semi
+
+    error           shift, and go to state 117
+    ID              shift, and go to state 11
+    DATA_TYPE       shift, and go to state 2
+    IF              shift, and go to state 92
+    WHILE           shift, and go to state 93
+    FOR             shift, and go to state 94
+    DO              shift, and go to state 95
+    CONTINUE        shift, and go to state 96
+    BREAK           shift, and go to state 97
+    RETURN          shift, and go to state 98
+    FLOATING_POINT  shift, and go to state 22
+    INTEGER         shift, and go to state 23
+    '{'             shift, and go to state 82
+
+    declaration       go to state 100
+    declaration_list  go to state 101
+    compound_stmts    go to state 102
+    stmt              go to state 118
+    conditional_stmt  go to state 105
+    iteration_stmt    go to state 106
+    jump_stmt         go to state 107
+    expr              go to state 108
+    data_type         go to state 109
+    id                go to state 25
+    number            go to state 26
+    left_brace        go to state 84
+
+
+State 96
+
+   32 jump_stmt: CONTINUE . semi
+
+    error  shift, and go to state 32
+    ';'    shift, and go to state 15
+
+    semi  go to state 119
+
+
+State 97
+
+   33 jump_stmt: BREAK . semi
+
+    error  shift, and go to state 32
+    ';'    shift, and go to state 15
+
+    semi  go to state 120
+
+
+State 98
+
+   34 jump_stmt: RETURN . semi
+   35          | RETURN . expr semi
+
+    error           shift, and go to state 121
+    ID              shift, and go to state 11
+    FLOATING_POINT  shift, and go to state 22
+    INTEGER         shift, and go to state 23
+    ';'             shift, and go to state 15
+
+    expr    go to state 122
+    semi    go to state 123
+    id      go to state 25
+    number  go to state 26
+
+
+State 99
+
+   88 right_brace: '}' .
+
+    $default  reduce using rule 88 (right_brace)
+
+
+State 100
+
+    8 declaration_list: declaration .
+    9                 | declaration . declaration_list
+
+    error      shift, and go to state 1
+    DATA_TYPE  shift, and go to state 2
+
+    error           [reduce using rule 8 (declaration_list)]
+    ID              reduce using rule 8 (declaration_list)
+    DATA_TYPE       [reduce using rule 8 (declaration_list)]
+    IF              reduce using rule 8 (declaration_list)
+    ELSE            reduce using rule 8 (declaration_list)
+    WHILE           reduce using rule 8 (declaration_list)
+    FOR             reduce using rule 8 (declaration_list)
+    DO              reduce using rule 8 (declaration_list)
+    CONTINUE        reduce using rule 8 (declaration_list)
+    BREAK           reduce using rule 8 (declaration_list)
+    RETURN          reduce using rule 8 (declaration_list)
+    FLOATING_POINT  reduce using rule 8 (declaration_list)
+    INTEGER         reduce using rule 8 (declaration_list)
+    '{'             reduce using rule 8 (declaration_list)
+    '}'             reduce using rule 8 (declaration_list)
+
+    declaration       go to state 100
+    declaration_list  go to state 124
+    data_type         go to state 109
+
+
+State 101
+
+   21 stmt: declaration_list .
+
+    $default  reduce using rule 21 (stmt)
+
+
+State 102
+
+   22 stmt: compound_stmts .
+
+    $default  reduce using rule 22 (stmt)
+
+
+State 103
+
+   18 compound_stmts: left_brace stmt_list . right_brace
+
+    error  shift, and go to state 125
+    '}'    shift, and go to state 99
+
+    right_brace  go to state 126
+
+
+State 104
+
+   20 stmt_list: stmt . stmt_list
+
+    error           shift, and go to state 117
+    ID              shift, and go to state 11
+    DATA_TYPE       shift, and go to state 2
+    IF              shift, and go to state 92
+    WHILE           shift, and go to state 93
+    FOR             shift, and go to state 94
+    DO              shift, and go to state 95
+    CONTINUE        shift, and go to state 96
+    BREAK           shift, and go to state 97
+    RETURN          shift, and go to state 98
+    FLOATING_POINT  shift, and go to state 22
+    INTEGER         shift, and go to state 23
+    '{'             shift, and go to state 82
+
+    error  [reduce using rule 19 (stmt_list)]
+    '}'    reduce using rule 19 (stmt_list)
+
+    declaration       go to state 100
+    declaration_list  go to state 101
+    compound_stmts    go to state 102
+    stmt_list         go to state 127
+    stmt              go to state 104
+    conditional_stmt  go to state 105
+    iteration_stmt    go to state 106
+    jump_stmt         go to state 107
+    expr              go to state 108
+    data_type         go to state 109
+    id                go to state 25
+    number            go to state 26
+    left_brace        go to state 84
+
+
+State 105
+
+   23 stmt: conditional_stmt .
+
+    $default  reduce using rule 23 (stmt)
+
+
+State 106
+
+   24 stmt: iteration_stmt .
+
+    $default  reduce using rule 24 (stmt)
+
+
+State 107
+
+   25 stmt: jump_stmt .
+
+    $default  reduce using rule 25 (stmt)
+
+
+State 108
+
+   26 stmt: expr . semi
+
+    error  shift, and go to state 32
+    ';'    shift, and go to state 15
+
+    semi  go to state 128
+
+
+State 109
+
+    5 declaration: data_type . id semi
+    6            | data_type . id '=' expr semi
+    7            | data_type . id left_bracket integer right_bracket semi
+
+    error  shift, and go to state 10
+    ID     shift, and go to state 11
+
+    id  go to state 129
+
+
+State 110
+
+   17 compound_stmts: left_brace right_brace .
+
+    $default  reduce using rule 17 (compound_stmts)
+
+
+State 111
+
+   13 arg_list: data_type id comma arg_list .
+
+    $default  reduce using rule 13 (arg_list)
+
+
+State 112
+
+   16 param_list: id comma param_list .
+
+    $default  reduce using rule 16 (param_list)
+
+
+State 113
+
+   83 left_parenthesis: error .
+
+    $default  reduce using rule 83 (left_parenthesis)
+
+
+State 114
+
+   27 conditional_stmt: IF left_parenthesis . expr right_parenthesis stmt
+   28                 | IF left_parenthesis . expr right_parenthesis stmt ELSE stmt
+
+    error           shift, and go to state 21
+    ID              shift, and go to state 11
+    FLOATING_POINT  shift, and go to state 22
+    INTEGER         shift, and go to state 23
+
+    expr    go to state 130
+    id      go to state 25
+    number  go to state 26
+
+
+State 115
+
+   29 iteration_stmt: WHILE left_parenthesis . expr right_parenthesis stmt
+
+    error           shift, and go to state 21
+    ID              shift, and go to state 11
+    FLOATING_POINT  shift, and go to state 22
+    INTEGER         shift, and go to state 23
+
+    expr    go to state 131
+    id      go to state 25
+    number  go to state 26
+
+
+State 116
+
+   31 iteration_stmt: FOR left_parenthesis . expr semi expr semi expr right_parenthesis stmt
+
+    error           shift, and go to state 21
+    ID              shift, and go to state 11
+    FLOATING_POINT  shift, and go to state 22
+    INTEGER         shift, and go to state 23
+
+    expr    go to state 132
+    id      go to state 25
+    number  go to state 26
+
+
+State 117
+
+   74 data_type: error .
+   76 id: error .
+   81 number: error .
+   87 left_brace: error .
+
+    error           reduce using rule 74 (data_type)
+    error           [reduce using rule 76 (id)]
+    error           [reduce using rule 81 (number)]
+    error           [reduce using rule 87 (left_brace)]
+    AND_OP          reduce using rule 76 (id)
+    AND_OP          [reduce using rule 81 (number)]
+    OR_OP           reduce using rule 76 (id)
+    OR_OP           [reduce using rule 81 (number)]
+    LE_OP           reduce using rule 76 (id)
+    LE_OP           [reduce using rule 81 (number)]
+    GE_OP           reduce using rule 76 (id)
+    GE_OP           [reduce using rule 81 (number)]
+    ID              reduce using rule 74 (data_type)
+    ID              [reduce using rule 87 (left_brace)]
+    DATA_TYPE       reduce using rule 87 (left_brace)
+    IF              reduce using rule 87 (left_brace)
+    WHILE           reduce using rule 87 (left_brace)
+    FOR             reduce using rule 87 (left_brace)
+    DO              reduce using rule 87 (left_brace)
+    CONTINUE        reduce using rule 87 (left_brace)
+    BREAK           reduce using rule 87 (left_brace)
+    RETURN          reduce using rule 87 (left_brace)
+    FLOATING_POINT  reduce using rule 87 (left_brace)
+    INTEGER         reduce using rule 87 (left_brace)
+    '<'             reduce using rule 76 (id)
+    '<'             [reduce using rule 81 (number)]
+    '>'             reduce using rule 76 (id)
+    '>'             [reduce using rule 81 (number)]
+    '!'             reduce using rule 76 (id)
+    '!'             [reduce using rule 81 (number)]
+    '+'             reduce using rule 76 (id)
+    '+'             [reduce using rule 81 (number)]
+    '-'             reduce using rule 76 (id)
+    '-'             [reduce using rule 81 (number)]
+    '*'             reduce using rule 76 (id)
+    '*'             [reduce using rule 81 (number)]
+    '/'             reduce using rule 76 (id)
+    '/'             [reduce using rule 81 (number)]
+    '%'             reduce using rule 76 (id)
+    '%'             [reduce using rule 81 (number)]
+    ';'             reduce using rule 76 (id)
+    ';'             [reduce using rule 81 (number)]
+    '{'             reduce using rule 87 (left_brace)
+    '}'             reduce using rule 87 (left_brace)
+    $default        reduce using rule 76 (id)
+
+
+State 118
+
+   30 iteration_stmt: DO stmt . WHILE left_parenthesis expr right_parenthesis semi
+
+    WHILE  shift, and go to state 133
+
+
+State 119
+
+   32 jump_stmt: CONTINUE semi .
+
+    $default  reduce using rule 32 (jump_stmt)
+
+
+State 120
+
+   33 jump_stmt: BREAK semi .
+
+    $default  reduce using rule 33 (jump_stmt)
+
+
+State 121
+
+   72 semi: error .
+   76 id: error .
+   81 number: error .
+
+    error           reduce using rule 72 (semi)
+    error           [reduce using rule 76 (id)]
+    error           [reduce using rule 81 (number)]
+    AND_OP          reduce using rule 76 (id)
+    AND_OP          [reduce using rule 81 (number)]
+    OR_OP           reduce using rule 76 (id)
+    OR_OP           [reduce using rule 81 (number)]
+    LE_OP           reduce using rule 76 (id)
+    LE_OP           [reduce using rule 81 (number)]
+    GE_OP           reduce using rule 76 (id)
+    GE_OP           [reduce using rule 81 (number)]
+    ID              reduce using rule 72 (semi)
+    DATA_TYPE       reduce using rule 72 (semi)
+    IF              reduce using rule 72 (semi)
+    ELSE            reduce using rule 72 (semi)
+    WHILE           reduce using rule 72 (semi)
+    FOR             reduce using rule 72 (semi)
+    DO              reduce using rule 72 (semi)
+    CONTINUE        reduce using rule 72 (semi)
+    BREAK           reduce using rule 72 (semi)
+    RETURN          reduce using rule 72 (semi)
+    FLOATING_POINT  reduce using rule 72 (semi)
+    INTEGER         reduce using rule 72 (semi)
+    '<'             reduce using rule 76 (id)
+    '<'             [reduce using rule 81 (number)]
+    '>'             reduce using rule 76 (id)
+    '>'             [reduce using rule 81 (number)]
+    '!'             reduce using rule 76 (id)
+    '!'             [reduce using rule 81 (number)]
+    '+'             reduce using rule 76 (id)
+    '+'             [reduce using rule 81 (number)]
+    '-'             reduce using rule 76 (id)
+    '-'             [reduce using rule 81 (number)]
+    '*'             reduce using rule 76 (id)
+    '*'             [reduce using rule 81 (number)]
+    '/'             reduce using rule 76 (id)
+    '/'             [reduce using rule 81 (number)]
+    '%'             reduce using rule 76 (id)
+    '%'             [reduce using rule 81 (number)]
+    ';'             reduce using rule 76 (id)
+    ';'             [reduce using rule 81 (number)]
+    '{'             reduce using rule 72 (semi)
+    '}'             reduce using rule 72 (semi)
+    $default        reduce using rule 76 (id)
+
+
+State 122
+
+   35 jump_stmt: RETURN expr . semi
+
+    error  shift, and go to state 32
+    ';'    shift, and go to state 15
+
+    semi  go to state 134
+
+
+State 123
+
+   34 jump_stmt: RETURN semi .
+
+    $default  reduce using rule 34 (jump_stmt)
+
+
+State 124
+
+    9 declaration_list: declaration declaration_list .
+
+    $default  reduce using rule 9 (declaration_list)
+
+
+State 125
+
+   89 right_brace: error .
+
+    $default  reduce using rule 89 (right_brace)
+
+
+State 126
+
+   18 compound_stmts: left_brace stmt_list right_brace .
+
+    $default  reduce using rule 18 (compound_stmts)
+
+
+State 127
+
+   20 stmt_list: stmt stmt_list .
+
+    $default  reduce using rule 20 (stmt_list)
+
+
+State 128
+
+   26 stmt: expr semi .
+
+    $default  reduce using rule 26 (stmt)
+
+
+State 129
+
+    5 declaration: data_type id . semi
+    6            | data_type id . '=' expr semi
+    7            | data_type id . left_bracket integer right_bracket semi
+
+    error  shift, and go to state 135
+    '='    shift, and go to state 14
+    ';'    shift, and go to state 15
+    '['    shift, and go to state 17
+
+    semi          go to state 18
+    left_bracket  go to state 20
+
+
+State 130
+
+   27 conditional_stmt: IF left_parenthesis expr . right_parenthesis stmt
+   28                 | IF left_parenthesis expr . right_parenthesis stmt ELSE stmt
+
+    error  shift, and go to state 65
+    ')'    shift, and go to state 66
+
+    right_parenthesis  go to state 136
+
+
+State 131
+
+   29 iteration_stmt: WHILE left_parenthesis expr . right_parenthesis stmt
+
+    error  shift, and go to state 65
+    ')'    shift, and go to state 66
+
+    right_parenthesis  go to state 137
+
+
+State 132
+
+   31 iteration_stmt: FOR left_parenthesis expr . semi expr semi expr right_parenthesis stmt
+
+    error  shift, and go to state 32
+    ';'    shift, and go to state 15
+
+    semi  go to state 138
+
+
+State 133
+
+   30 iteration_stmt: DO stmt WHILE . left_parenthesis expr right_parenthesis semi
+
+    error  shift, and go to state 113
+    '('    shift, and go to state 16
+
+    left_parenthesis  go to state 139
+
+
+State 134
+
+   35 jump_stmt: RETURN expr semi .
+
+    $default  reduce using rule 35 (jump_stmt)
+
+
+State 135
+
+   72 semi: error .
+   91 left_bracket: error .
+
+    error     reduce using rule 72 (semi)
+    error     [reduce using rule 91 (left_bracket)]
+    INTEGER   reduce using rule 72 (semi)
+    INTEGER   [reduce using rule 91 (left_bracket)]
+    $default  reduce using rule 72 (semi)
+
+
+State 136
+
+   27 conditional_stmt: IF left_parenthesis expr right_parenthesis . stmt
+   28                 | IF left_parenthesis expr right_parenthesis . stmt ELSE stmt
+
+    error           shift, and go to state 117
+    ID              shift, and go to state 11
+    DATA_TYPE       shift, and go to state 2
+    IF              shift, and go to state 92
+    WHILE           shift, and go to state 93
+    FOR             shift, and go to state 94
+    DO              shift, and go to state 95
+    CONTINUE        shift, and go to state 96
+    BREAK           shift, and go to state 97
+    RETURN          shift, and go to state 98
+    FLOATING_POINT  shift, and go to state 22
+    INTEGER         shift, and go to state 23
+    '{'             shift, and go to state 82
+
+    declaration       go to state 100
+    declaration_list  go to state 101
+    compound_stmts    go to state 102
+    stmt              go to state 140
+    conditional_stmt  go to state 105
+    iteration_stmt    go to state 106
+    jump_stmt         go to state 107
+    expr              go to state 108
+    data_type         go to state 109
+    id                go to state 25
+    number            go to state 26
+    left_brace        go to state 84
+
+
+State 137
+
+   29 iteration_stmt: WHILE left_parenthesis expr right_parenthesis . stmt
+
+    error           shift, and go to state 117
+    ID              shift, and go to state 11
+    DATA_TYPE       shift, and go to state 2
+    IF              shift, and go to state 92
+    WHILE           shift, and go to state 93
+    FOR             shift, and go to state 94
+    DO              shift, and go to state 95
+    CONTINUE        shift, and go to state 96
+    BREAK           shift, and go to state 97
+    RETURN          shift, and go to state 98
+    FLOATING_POINT  shift, and go to state 22
+    INTEGER         shift, and go to state 23
+    '{'             shift, and go to state 82
+
+    declaration       go to state 100
+    declaration_list  go to state 101
+    compound_stmts    go to state 102
+    stmt              go to state 141
+    conditional_stmt  go to state 105
+    iteration_stmt    go to state 106
+    jump_stmt         go to state 107
+    expr              go to state 108
+    data_type         go to state 109
+    id                go to state 25
+    number            go to state 26
+    left_brace        go to state 84
+
+
+State 138
+
+   31 iteration_stmt: FOR left_parenthesis expr semi . expr semi expr right_parenthesis stmt
+
+    error           shift, and go to state 21
+    ID              shift, and go to state 11
+    FLOATING_POINT  shift, and go to state 22
+    INTEGER         shift, and go to state 23
+
+    expr    go to state 142
+    id      go to state 25
+    number  go to state 26
+
+
+State 139
+
+   30 iteration_stmt: DO stmt WHILE left_parenthesis . expr right_parenthesis semi
+
+    error           shift, and go to state 21
+    ID              shift, and go to state 11
+    FLOATING_POINT  shift, and go to state 22
+    INTEGER         shift, and go to state 23
+
+    expr    go to state 143
+    id      go to state 25
+    number  go to state 26
+
+
+State 140
+
+   27 conditional_stmt: IF left_parenthesis expr right_parenthesis stmt .
+   28                 | IF left_parenthesis expr right_parenthesis stmt . ELSE stmt
+
+    ELSE  shift, and go to state 144
+
+    ELSE      [reduce using rule 27 (conditional_stmt)]
+    $default  reduce using rule 27 (conditional_stmt)
+
+
+State 141
+
+   29 iteration_stmt: WHILE left_parenthesis expr right_parenthesis stmt .
+
+    $default  reduce using rule 29 (iteration_stmt)
+
+
+State 142
+
+   31 iteration_stmt: FOR left_parenthesis expr semi expr . semi expr right_parenthesis stmt
+
+    error  shift, and go to state 32
+    ';'    shift, and go to state 15
+
+    semi  go to state 145
+
+
+State 143
+
+   30 iteration_stmt: DO stmt WHILE left_parenthesis expr . right_parenthesis semi
+
+    error  shift, and go to state 65
+    ')'    shift, and go to state 66
+
+    right_parenthesis  go to state 146
+
+
+State 144
+
+   28 conditional_stmt: IF left_parenthesis expr right_parenthesis stmt ELSE . stmt
+
+    error           shift, and go to state 117
+    ID              shift, and go to state 11
+    DATA_TYPE       shift, and go to state 2
+    IF              shift, and go to state 92
+    WHILE           shift, and go to state 93
+    FOR             shift, and go to state 94
+    DO              shift, and go to state 95
+    CONTINUE        shift, and go to state 96
+    BREAK           shift, and go to state 97
+    RETURN          shift, and go to state 98
+    FLOATING_POINT  shift, and go to state 22
+    INTEGER         shift, and go to state 23
+    '{'             shift, and go to state 82
+
+    declaration       go to state 100
+    declaration_list  go to state 101
+    compound_stmts    go to state 102
+    stmt              go to state 147
+    conditional_stmt  go to state 105
+    iteration_stmt    go to state 106
+    jump_stmt         go to state 107
+    expr              go to state 108
+    data_type         go to state 109
+    id                go to state 25
+    number            go to state 26
+    left_brace        go to state 84
+
+
+State 145
+
+   31 iteration_stmt: FOR left_parenthesis expr semi expr semi . expr right_parenthesis stmt
+
+    error           shift, and go to state 21
+    ID              shift, and go to state 11
+    FLOATING_POINT  shift, and go to state 22
+    INTEGER         shift, and go to state 23
+
+    expr    go to state 148
+    id      go to state 25
+    number  go to state 26
+
+
+State 146
+
+   30 iteration_stmt: DO stmt WHILE left_parenthesis expr right_parenthesis . semi
+
+    error  shift, and go to state 32
+    ';'    shift, and go to state 15
+
+    semi  go to state 149
+
+
+State 147
+
+   28 conditional_stmt: IF left_parenthesis expr right_parenthesis stmt ELSE stmt .
+
+    $default  reduce using rule 28 (conditional_stmt)
+
+
+State 148
+
+   31 iteration_stmt: FOR left_parenthesis expr semi expr semi expr . right_parenthesis stmt
+
+    error  shift, and go to state 65
+    ')'    shift, and go to state 66
+
+    right_parenthesis  go to state 150
+
+
+State 149
+
+   30 iteration_stmt: DO stmt WHILE left_parenthesis expr right_parenthesis semi .
+
+    $default  reduce using rule 30 (iteration_stmt)
+
+
+State 150
+
+   31 iteration_stmt: FOR left_parenthesis expr semi expr semi expr right_parenthesis . stmt
+
+    error           shift, and go to state 117
+    ID              shift, and go to state 11
+    DATA_TYPE       shift, and go to state 2
+    IF              shift, and go to state 92
+    WHILE           shift, and go to state 93
+    FOR             shift, and go to state 94
+    DO              shift, and go to state 95
+    CONTINUE        shift, and go to state 96
+    BREAK           shift, and go to state 97
+    RETURN          shift, and go to state 98
+    FLOATING_POINT  shift, and go to state 22
+    INTEGER         shift, and go to state 23
+    '{'             shift, and go to state 82
+
+    declaration       go to state 100
+    declaration_list  go to state 101
+    compound_stmts    go to state 102
+    stmt              go to state 151
+    conditional_stmt  go to state 105
+    iteration_stmt    go to state 106
+    jump_stmt         go to state 107
+    expr              go to state 108
+    data_type         go to state 109
+    id                go to state 25
+    number            go to state 26
+    left_brace        go to state 84
+
+
+State 151
+
+   31 iteration_stmt: FOR left_parenthesis expr semi expr semi expr right_parenthesis stmt .
+
+    $default  reduce using rule 31 (iteration_stmt)

@@ -1,0 +1,1846 @@
+   0  $accept : strt $end
+
+   1  strt :
+   2       | external_declaration strt
+
+   3  external_declaration : function_definition
+   4                       | declaration
+
+   5  declaration : data_type id semi
+   6              | data_type id '=' expr semi
+   7              | data_type id left_bracket integer right_bracket semi
+
+   8  declaration_list : declaration
+   9                   | declaration declaration_list
+
+  10  function_definition : data_type id left_parenthesis arg_list right_parenthesis compound_stmts
+
+  11  arg_list :
+  12           | data_type id
+  13           | data_type id comma arg_list
+
+  14  param_list :
+  15             | id
+  16             | id comma param_list
+
+  17  compound_stmts : left_brace right_brace
+  18                 | left_brace stmt_list right_brace
+
+  19  stmt_list :
+  20            | stmt stmt_list
+
+  21  stmt : declaration_list
+  22       | compound_stmts
+  23       | conditional_stmt
+  24       | iteration_stmt
+  25       | jump_stmt
+  26       | expr semi
+
+  27  conditional_stmt : IF left_parenthesis expr right_parenthesis stmt
+  28                   | IF left_parenthesis expr right_parenthesis stmt ELSE stmt
+
+  29  iteration_stmt : WHILE left_parenthesis expr right_parenthesis stmt
+  30                 | DO stmt WHILE left_parenthesis expr right_parenthesis semi
+  31                 | FOR left_parenthesis expr semi expr semi expr right_parenthesis stmt
+
+  32  jump_stmt : CONTINUE semi
+  33            | BREAK semi
+  34            | RETURN semi
+  35            | RETURN expr semi
+
+  36  expr : number
+  37       | id
+  38       | number operator expr
+  39       | id operator expr
+  40       | id left_parenthesis param_list right_parenthesis
+
+  41  operator : assignment_op
+  42           | relational_op
+  43           | logical_op
+  44           | binary_op
+  45           | error
+
+  46  assignment_op : '='
+  47                | MUL_ASSIGN
+  48                | DIV_ASSIGN
+  49                | MOD_ASSIGN
+  50                | ADD_ASSIGN
+  51                | SUB_ASSIGN
+  52                | AND_ASSIGN
+  53                | XOR_ASSIGN
+  54                | OR_ASSIGN
+
+  55  relational_op : '<'
+  56                | '>'
+  57                | LE_OP
+  58                | GE_OP
+
+  59  logical_op : '!'
+  60             | AND_OP
+  61             | OR_OP
+
+  62  binary_op : '+'
+  63            | '-'
+  64            | '*'
+  65            | '/'
+  66            | '%'
+
+  67  semi : ';'
+  68       | error
+
+  69  data_type : DATA_TYPE
+  70            | error
+
+  71  id : ID
+  72     | error
+
+  73  integer : INTEGER
+  74          | error
+
+  75  number : INTEGER
+  76         | FLOATING_POINT
+  77         | error
+
+  78  left_parenthesis : '('
+  79                   | error
+
+  80  right_parenthesis : ')'
+  81                    | error
+
+  82  left_brace : '{'
+  83             | error
+
+  84  right_brace : '}'
+  85              | error
+
+  86  left_bracket : '['
+  87               | error
+
+  88  right_bracket : ']'
+  89                | error
+
+  90  comma : ','
+  91        | error
+
+state 0
+	$accept : . strt $end  (0)
+	strt : .  (1)
+
+	error  shift 1
+	DATA_TYPE  shift 2
+	$end  reduce 1
+
+	strt  goto 3
+	external_declaration  goto 4
+	function_definition  goto 5
+	declaration  goto 6
+	data_type  goto 7
+
+
+state 1
+	data_type : error .  (70)
+
+	.  reduce 70
+
+
+state 2
+	data_type : DATA_TYPE .  (69)
+
+	.  reduce 69
+
+
+state 3
+	$accept : strt . $end  (0)
+
+	$end  accept
+
+
+state 4
+	strt : external_declaration . strt  (2)
+	strt : .  (1)
+
+	error  shift 1
+	DATA_TYPE  shift 2
+	$end  reduce 1
+
+	strt  goto 8
+	external_declaration  goto 4
+	function_definition  goto 5
+	declaration  goto 6
+	data_type  goto 7
+
+
+state 5
+	external_declaration : function_definition .  (3)
+
+	.  reduce 3
+
+
+state 6
+	external_declaration : declaration .  (4)
+
+	.  reduce 4
+
+
+state 7
+	declaration : data_type . id semi  (5)
+	declaration : data_type . id '=' expr semi  (6)
+	declaration : data_type . id left_bracket integer right_bracket semi  (7)
+	function_definition : data_type . id left_parenthesis arg_list right_parenthesis compound_stmts  (10)
+
+	error  shift 9
+	ID  shift 10
+	.  error
+
+	id  goto 11
+
+
+state 8
+	strt : external_declaration strt .  (2)
+
+	.  reduce 2
+
+
+state 9
+	id : error .  (72)
+
+	.  reduce 72
+
+
+state 10
+	id : ID .  (71)
+
+	.  reduce 71
+
+
+state 11
+	declaration : data_type id . semi  (5)
+	declaration : data_type id . '=' expr semi  (6)
+	declaration : data_type id . left_bracket integer right_bracket semi  (7)
+	function_definition : data_type id . left_parenthesis arg_list right_parenthesis compound_stmts  (10)
+
+	error  shift 12
+	'='  shift 13
+	';'  shift 14
+	'('  shift 15
+	'['  shift 16
+	.  error
+
+	semi  goto 17
+	left_bracket  goto 18
+	left_parenthesis  goto 19
+
+
+12: reduce/reduce conflict (reduce 68, reduce 79) on error
+12: reduce/reduce conflict (reduce 68, reduce 87) on error
+12: reduce/reduce conflict (reduce 68, reduce 79) on DATA_TYPE
+state 12
+	semi : error .  (68)
+	left_parenthesis : error .  (79)
+	left_bracket : error .  (87)
+
+	$end  reduce 68
+	error  reduce 68
+	DATA_TYPE  reduce 68
+	INTEGER  reduce 87
+	')'  reduce 79
+
+
+state 13
+	declaration : data_type id '=' . expr semi  (6)
+
+	error  shift 20
+	ID  shift 10
+	FLOATING_POINT  shift 21
+	INTEGER  shift 22
+	.  error
+
+	id  goto 23
+	expr  goto 24
+	number  goto 25
+
+
+state 14
+	semi : ';' .  (67)
+
+	.  reduce 67
+
+
+state 15
+	left_parenthesis : '(' .  (78)
+
+	.  reduce 78
+
+
+state 16
+	left_bracket : '[' .  (86)
+
+	.  reduce 86
+
+
+state 17
+	declaration : data_type id semi .  (5)
+
+	.  reduce 5
+
+
+state 18
+	declaration : data_type id left_bracket . integer right_bracket semi  (7)
+
+	error  shift 26
+	INTEGER  shift 27
+	.  error
+
+	integer  goto 28
+
+
+19: shift/reduce conflict (shift 1, reduce 11) on error
+state 19
+	function_definition : data_type id left_parenthesis . arg_list right_parenthesis compound_stmts  (10)
+	arg_list : .  (11)
+
+	error  shift 1
+	DATA_TYPE  shift 2
+	')'  reduce 11
+
+	data_type  goto 29
+	arg_list  goto 30
+
+
+20: reduce/reduce conflict (reduce 72, reduce 77) on error
+20: reduce/reduce conflict (reduce 72, reduce 77) on ADD_ASSIGN
+20: reduce/reduce conflict (reduce 72, reduce 77) on SUB_ASSIGN
+20: reduce/reduce conflict (reduce 72, reduce 77) on MUL_ASSIGN
+20: reduce/reduce conflict (reduce 72, reduce 77) on DIV_ASSIGN
+20: reduce/reduce conflict (reduce 72, reduce 77) on MOD_ASSIGN
+20: reduce/reduce conflict (reduce 72, reduce 77) on AND_ASSIGN
+20: reduce/reduce conflict (reduce 72, reduce 77) on XOR_ASSIGN
+20: reduce/reduce conflict (reduce 72, reduce 77) on OR_ASSIGN
+20: reduce/reduce conflict (reduce 72, reduce 77) on AND_OP
+20: reduce/reduce conflict (reduce 72, reduce 77) on OR_OP
+20: reduce/reduce conflict (reduce 72, reduce 77) on LE_OP
+20: reduce/reduce conflict (reduce 72, reduce 77) on GE_OP
+20: reduce/reduce conflict (reduce 72, reduce 77) on '='
+20: reduce/reduce conflict (reduce 72, reduce 77) on '<'
+20: reduce/reduce conflict (reduce 72, reduce 77) on '>'
+20: reduce/reduce conflict (reduce 72, reduce 77) on '!'
+20: reduce/reduce conflict (reduce 72, reduce 77) on '+'
+20: reduce/reduce conflict (reduce 72, reduce 77) on '-'
+20: reduce/reduce conflict (reduce 72, reduce 77) on '*'
+20: reduce/reduce conflict (reduce 72, reduce 77) on '/'
+20: reduce/reduce conflict (reduce 72, reduce 77) on '%'
+20: reduce/reduce conflict (reduce 72, reduce 77) on ';'
+20: reduce/reduce conflict (reduce 72, reduce 77) on ')'
+state 20
+	id : error .  (72)
+	number : error .  (77)
+
+	.  reduce 72
+
+
+state 21
+	number : FLOATING_POINT .  (76)
+
+	.  reduce 76
+
+
+state 22
+	number : INTEGER .  (75)
+
+	.  reduce 75
+
+
+23: shift/reduce conflict (shift 31, reduce 37) on error
+state 23
+	expr : id .  (37)
+	expr : id . operator expr  (39)
+	expr : id . left_parenthesis param_list right_parenthesis  (40)
+
+	error  shift 31
+	ADD_ASSIGN  shift 32
+	SUB_ASSIGN  shift 33
+	MUL_ASSIGN  shift 34
+	DIV_ASSIGN  shift 35
+	MOD_ASSIGN  shift 36
+	AND_ASSIGN  shift 37
+	XOR_ASSIGN  shift 38
+	OR_ASSIGN  shift 39
+	AND_OP  shift 40
+	OR_OP  shift 41
+	LE_OP  shift 42
+	GE_OP  shift 43
+	'='  shift 44
+	'<'  shift 45
+	'>'  shift 46
+	'!'  shift 47
+	'+'  shift 48
+	'-'  shift 49
+	'*'  shift 50
+	'/'  shift 51
+	'%'  shift 52
+	'('  shift 15
+	';'  reduce 37
+	')'  reduce 37
+
+	left_parenthesis  goto 53
+	operator  goto 54
+	assignment_op  goto 55
+	relational_op  goto 56
+	logical_op  goto 57
+	binary_op  goto 58
+
+
+state 24
+	declaration : data_type id '=' expr . semi  (6)
+
+	error  shift 59
+	';'  shift 14
+	.  error
+
+	semi  goto 60
+
+
+25: shift/reduce conflict (shift 61, reduce 36) on error
+state 25
+	expr : number .  (36)
+	expr : number . operator expr  (38)
+
+	error  shift 61
+	ADD_ASSIGN  shift 32
+	SUB_ASSIGN  shift 33
+	MUL_ASSIGN  shift 34
+	DIV_ASSIGN  shift 35
+	MOD_ASSIGN  shift 36
+	AND_ASSIGN  shift 37
+	XOR_ASSIGN  shift 38
+	OR_ASSIGN  shift 39
+	AND_OP  shift 40
+	OR_OP  shift 41
+	LE_OP  shift 42
+	GE_OP  shift 43
+	'='  shift 44
+	'<'  shift 45
+	'>'  shift 46
+	'!'  shift 47
+	'+'  shift 48
+	'-'  shift 49
+	'*'  shift 50
+	'/'  shift 51
+	'%'  shift 52
+	';'  reduce 36
+	')'  reduce 36
+
+	operator  goto 62
+	assignment_op  goto 55
+	relational_op  goto 56
+	logical_op  goto 57
+	binary_op  goto 58
+
+
+state 26
+	integer : error .  (74)
+
+	.  reduce 74
+
+
+state 27
+	integer : INTEGER .  (73)
+
+	.  reduce 73
+
+
+state 28
+	declaration : data_type id left_bracket integer . right_bracket semi  (7)
+
+	error  shift 63
+	']'  shift 64
+	.  error
+
+	right_bracket  goto 65
+
+
+state 29
+	arg_list : data_type . id  (12)
+	arg_list : data_type . id comma arg_list  (13)
+
+	error  shift 9
+	ID  shift 10
+	.  error
+
+	id  goto 66
+
+
+state 30
+	function_definition : data_type id left_parenthesis arg_list . right_parenthesis compound_stmts  (10)
+
+	error  shift 67
+	')'  shift 68
+	.  error
+
+	right_parenthesis  goto 69
+
+
+31: reduce/reduce conflict (reduce 45, reduce 79) on error
+31: reduce/reduce conflict (reduce 45, reduce 79) on ID
+state 31
+	operator : error .  (45)
+	left_parenthesis : error .  (79)
+
+	error  reduce 45
+	ID  reduce 45
+	FLOATING_POINT  reduce 45
+	INTEGER  reduce 45
+	')'  reduce 79
+
+
+state 32
+	assignment_op : ADD_ASSIGN .  (50)
+
+	.  reduce 50
+
+
+state 33
+	assignment_op : SUB_ASSIGN .  (51)
+
+	.  reduce 51
+
+
+state 34
+	assignment_op : MUL_ASSIGN .  (47)
+
+	.  reduce 47
+
+
+state 35
+	assignment_op : DIV_ASSIGN .  (48)
+
+	.  reduce 48
+
+
+state 36
+	assignment_op : MOD_ASSIGN .  (49)
+
+	.  reduce 49
+
+
+state 37
+	assignment_op : AND_ASSIGN .  (52)
+
+	.  reduce 52
+
+
+state 38
+	assignment_op : XOR_ASSIGN .  (53)
+
+	.  reduce 53
+
+
+state 39
+	assignment_op : OR_ASSIGN .  (54)
+
+	.  reduce 54
+
+
+state 40
+	logical_op : AND_OP .  (60)
+
+	.  reduce 60
+
+
+state 41
+	logical_op : OR_OP .  (61)
+
+	.  reduce 61
+
+
+state 42
+	relational_op : LE_OP .  (57)
+
+	.  reduce 57
+
+
+state 43
+	relational_op : GE_OP .  (58)
+
+	.  reduce 58
+
+
+state 44
+	assignment_op : '=' .  (46)
+
+	.  reduce 46
+
+
+state 45
+	relational_op : '<' .  (55)
+
+	.  reduce 55
+
+
+state 46
+	relational_op : '>' .  (56)
+
+	.  reduce 56
+
+
+state 47
+	logical_op : '!' .  (59)
+
+	.  reduce 59
+
+
+state 48
+	binary_op : '+' .  (62)
+
+	.  reduce 62
+
+
+state 49
+	binary_op : '-' .  (63)
+
+	.  reduce 63
+
+
+state 50
+	binary_op : '*' .  (64)
+
+	.  reduce 64
+
+
+state 51
+	binary_op : '/' .  (65)
+
+	.  reduce 65
+
+
+state 52
+	binary_op : '%' .  (66)
+
+	.  reduce 66
+
+
+53: shift/reduce conflict (shift 9, reduce 14) on error
+state 53
+	expr : id left_parenthesis . param_list right_parenthesis  (40)
+	param_list : .  (14)
+
+	error  shift 9
+	ID  shift 10
+	')'  reduce 14
+
+	id  goto 70
+	param_list  goto 71
+
+
+state 54
+	expr : id operator . expr  (39)
+
+	error  shift 20
+	ID  shift 10
+	FLOATING_POINT  shift 21
+	INTEGER  shift 22
+	.  error
+
+	id  goto 23
+	expr  goto 72
+	number  goto 25
+
+
+state 55
+	operator : assignment_op .  (41)
+
+	.  reduce 41
+
+
+state 56
+	operator : relational_op .  (42)
+
+	.  reduce 42
+
+
+state 57
+	operator : logical_op .  (43)
+
+	.  reduce 43
+
+
+state 58
+	operator : binary_op .  (44)
+
+	.  reduce 44
+
+
+state 59
+	semi : error .  (68)
+
+	.  reduce 68
+
+
+state 60
+	declaration : data_type id '=' expr semi .  (6)
+
+	.  reduce 6
+
+
+state 61
+	operator : error .  (45)
+
+	.  reduce 45
+
+
+state 62
+	expr : number operator . expr  (38)
+
+	error  shift 20
+	ID  shift 10
+	FLOATING_POINT  shift 21
+	INTEGER  shift 22
+	.  error
+
+	id  goto 23
+	expr  goto 73
+	number  goto 25
+
+
+state 63
+	right_bracket : error .  (89)
+
+	.  reduce 89
+
+
+state 64
+	right_bracket : ']' .  (88)
+
+	.  reduce 88
+
+
+state 65
+	declaration : data_type id left_bracket integer right_bracket . semi  (7)
+
+	error  shift 59
+	';'  shift 14
+	.  error
+
+	semi  goto 74
+
+
+66: shift/reduce conflict (shift 75, reduce 12) on error
+state 66
+	arg_list : data_type id .  (12)
+	arg_list : data_type id . comma arg_list  (13)
+
+	error  shift 75
+	','  shift 76
+	')'  reduce 12
+
+	comma  goto 77
+
+
+state 67
+	right_parenthesis : error .  (81)
+
+	.  reduce 81
+
+
+state 68
+	right_parenthesis : ')' .  (80)
+
+	.  reduce 80
+
+
+state 69
+	function_definition : data_type id left_parenthesis arg_list right_parenthesis . compound_stmts  (10)
+
+	error  shift 78
+	'{'  shift 79
+	.  error
+
+	compound_stmts  goto 80
+	left_brace  goto 81
+
+
+70: shift/reduce conflict (shift 75, reduce 15) on error
+state 70
+	param_list : id .  (15)
+	param_list : id . comma param_list  (16)
+
+	error  shift 75
+	','  shift 76
+	')'  reduce 15
+
+	comma  goto 82
+
+
+state 71
+	expr : id left_parenthesis param_list . right_parenthesis  (40)
+
+	error  shift 67
+	')'  shift 68
+	.  error
+
+	right_parenthesis  goto 83
+
+
+state 72
+	expr : id operator expr .  (39)
+
+	.  reduce 39
+
+
+state 73
+	expr : number operator expr .  (38)
+
+	.  reduce 38
+
+
+state 74
+	declaration : data_type id left_bracket integer right_bracket semi .  (7)
+
+	.  reduce 7
+
+
+state 75
+	comma : error .  (91)
+
+	.  reduce 91
+
+
+state 76
+	comma : ',' .  (90)
+
+	.  reduce 90
+
+
+77: shift/reduce conflict (shift 1, reduce 11) on error
+state 77
+	arg_list : data_type id comma . arg_list  (13)
+	arg_list : .  (11)
+
+	error  shift 1
+	DATA_TYPE  shift 2
+	')'  reduce 11
+
+	data_type  goto 29
+	arg_list  goto 84
+
+
+state 78
+	left_brace : error .  (83)
+
+	.  reduce 83
+
+
+state 79
+	left_brace : '{' .  (82)
+
+	.  reduce 82
+
+
+state 80
+	function_definition : data_type id left_parenthesis arg_list right_parenthesis compound_stmts .  (10)
+
+	.  reduce 10
+
+
+81: shift/reduce conflict (shift 85, reduce 19) on error
+81: shift/reduce conflict (shift 93, reduce 19) on '}'
+state 81
+	compound_stmts : left_brace . right_brace  (17)
+	compound_stmts : left_brace . stmt_list right_brace  (18)
+	stmt_list : .  (19)
+
+	error  shift 85
+	ID  shift 10
+	DATA_TYPE  shift 2
+	IF  shift 86
+	WHILE  shift 87
+	FOR  shift 88
+	DO  shift 89
+	CONTINUE  shift 90
+	BREAK  shift 91
+	RETURN  shift 92
+	FLOATING_POINT  shift 21
+	INTEGER  shift 22
+	'{'  shift 79
+	'}'  shift 93
+
+	declaration  goto 94
+	data_type  goto 95
+	id  goto 23
+	expr  goto 96
+	declaration_list  goto 97
+	compound_stmts  goto 98
+	left_brace  goto 81
+	right_brace  goto 99
+	stmt_list  goto 100
+	stmt  goto 101
+	conditional_stmt  goto 102
+	iteration_stmt  goto 103
+	jump_stmt  goto 104
+	number  goto 25
+
+
+82: shift/reduce conflict (shift 9, reduce 14) on error
+state 82
+	param_list : id comma . param_list  (16)
+	param_list : .  (14)
+
+	error  shift 9
+	ID  shift 10
+	')'  reduce 14
+
+	id  goto 70
+	param_list  goto 105
+
+
+state 83
+	expr : id left_parenthesis param_list right_parenthesis .  (40)
+
+	.  reduce 40
+
+
+state 84
+	arg_list : data_type id comma arg_list .  (13)
+
+	.  reduce 13
+
+
+85: reduce/reduce conflict (reduce 70, reduce 72) on error
+85: reduce/reduce conflict (reduce 70, reduce 77) on error
+85: reduce/reduce conflict (reduce 70, reduce 83) on error
+85: reduce/reduce conflict (reduce 70, reduce 85) on error
+85: reduce/reduce conflict (reduce 72, reduce 77) on ADD_ASSIGN
+85: reduce/reduce conflict (reduce 72, reduce 77) on SUB_ASSIGN
+85: reduce/reduce conflict (reduce 72, reduce 77) on MUL_ASSIGN
+85: reduce/reduce conflict (reduce 72, reduce 77) on DIV_ASSIGN
+85: reduce/reduce conflict (reduce 72, reduce 77) on MOD_ASSIGN
+85: reduce/reduce conflict (reduce 72, reduce 77) on AND_ASSIGN
+85: reduce/reduce conflict (reduce 72, reduce 77) on XOR_ASSIGN
+85: reduce/reduce conflict (reduce 72, reduce 77) on OR_ASSIGN
+85: reduce/reduce conflict (reduce 72, reduce 77) on AND_OP
+85: reduce/reduce conflict (reduce 72, reduce 77) on OR_OP
+85: reduce/reduce conflict (reduce 72, reduce 77) on LE_OP
+85: reduce/reduce conflict (reduce 72, reduce 77) on GE_OP
+85: reduce/reduce conflict (reduce 70, reduce 83) on ID
+85: reduce/reduce conflict (reduce 70, reduce 85) on ID
+85: reduce/reduce conflict (reduce 83, reduce 85) on DATA_TYPE
+85: reduce/reduce conflict (reduce 83, reduce 85) on IF
+85: reduce/reduce conflict (reduce 83, reduce 85) on WHILE
+85: reduce/reduce conflict (reduce 83, reduce 85) on FOR
+85: reduce/reduce conflict (reduce 83, reduce 85) on DO
+85: reduce/reduce conflict (reduce 83, reduce 85) on CONTINUE
+85: reduce/reduce conflict (reduce 83, reduce 85) on BREAK
+85: reduce/reduce conflict (reduce 83, reduce 85) on RETURN
+85: reduce/reduce conflict (reduce 83, reduce 85) on FLOATING_POINT
+85: reduce/reduce conflict (reduce 83, reduce 85) on INTEGER
+85: reduce/reduce conflict (reduce 72, reduce 77) on '='
+85: reduce/reduce conflict (reduce 72, reduce 77) on '<'
+85: reduce/reduce conflict (reduce 72, reduce 77) on '>'
+85: reduce/reduce conflict (reduce 72, reduce 77) on '!'
+85: reduce/reduce conflict (reduce 72, reduce 77) on '+'
+85: reduce/reduce conflict (reduce 72, reduce 77) on '-'
+85: reduce/reduce conflict (reduce 72, reduce 77) on '*'
+85: reduce/reduce conflict (reduce 72, reduce 77) on '/'
+85: reduce/reduce conflict (reduce 72, reduce 77) on '%'
+85: reduce/reduce conflict (reduce 72, reduce 77) on ';'
+85: reduce/reduce conflict (reduce 83, reduce 85) on '{'
+85: reduce/reduce conflict (reduce 83, reduce 85) on '}'
+state 85
+	data_type : error .  (70)
+	id : error .  (72)
+	number : error .  (77)
+	left_brace : error .  (83)
+	right_brace : error .  (85)
+
+	$end  reduce 85
+	error  reduce 70
+	ADD_ASSIGN  reduce 72
+	SUB_ASSIGN  reduce 72
+	MUL_ASSIGN  reduce 72
+	DIV_ASSIGN  reduce 72
+	MOD_ASSIGN  reduce 72
+	AND_ASSIGN  reduce 72
+	XOR_ASSIGN  reduce 72
+	OR_ASSIGN  reduce 72
+	AND_OP  reduce 72
+	OR_OP  reduce 72
+	LE_OP  reduce 72
+	GE_OP  reduce 72
+	ID  reduce 70
+	DATA_TYPE  reduce 83
+	IF  reduce 83
+	ELSE  reduce 85
+	WHILE  reduce 83
+	FOR  reduce 83
+	DO  reduce 83
+	CONTINUE  reduce 83
+	BREAK  reduce 83
+	RETURN  reduce 83
+	FLOATING_POINT  reduce 83
+	INTEGER  reduce 83
+	'='  reduce 72
+	'<'  reduce 72
+	'>'  reduce 72
+	'!'  reduce 72
+	'+'  reduce 72
+	'-'  reduce 72
+	'*'  reduce 72
+	'/'  reduce 72
+	'%'  reduce 72
+	';'  reduce 72
+	'('  reduce 72
+	'{'  reduce 83
+	'}'  reduce 83
+
+
+state 86
+	conditional_stmt : IF . left_parenthesis expr right_parenthesis stmt  (27)
+	conditional_stmt : IF . left_parenthesis expr right_parenthesis stmt ELSE stmt  (28)
+
+	error  shift 106
+	'('  shift 15
+	.  error
+
+	left_parenthesis  goto 107
+
+
+state 87
+	iteration_stmt : WHILE . left_parenthesis expr right_parenthesis stmt  (29)
+
+	error  shift 106
+	'('  shift 15
+	.  error
+
+	left_parenthesis  goto 108
+
+
+state 88
+	iteration_stmt : FOR . left_parenthesis expr semi expr semi expr right_parenthesis stmt  (31)
+
+	error  shift 106
+	'('  shift 15
+	.  error
+
+	left_parenthesis  goto 109
+
+
+state 89
+	iteration_stmt : DO . stmt WHILE left_parenthesis expr right_parenthesis semi  (30)
+
+	error  shift 110
+	ID  shift 10
+	DATA_TYPE  shift 2
+	IF  shift 86
+	WHILE  shift 87
+	FOR  shift 88
+	DO  shift 89
+	CONTINUE  shift 90
+	BREAK  shift 91
+	RETURN  shift 92
+	FLOATING_POINT  shift 21
+	INTEGER  shift 22
+	'{'  shift 79
+	.  error
+
+	declaration  goto 94
+	data_type  goto 95
+	id  goto 23
+	expr  goto 96
+	declaration_list  goto 97
+	compound_stmts  goto 98
+	left_brace  goto 81
+	stmt  goto 111
+	conditional_stmt  goto 102
+	iteration_stmt  goto 103
+	jump_stmt  goto 104
+	number  goto 25
+
+
+state 90
+	jump_stmt : CONTINUE . semi  (32)
+
+	error  shift 59
+	';'  shift 14
+	.  error
+
+	semi  goto 112
+
+
+state 91
+	jump_stmt : BREAK . semi  (33)
+
+	error  shift 59
+	';'  shift 14
+	.  error
+
+	semi  goto 113
+
+
+state 92
+	jump_stmt : RETURN . semi  (34)
+	jump_stmt : RETURN . expr semi  (35)
+
+	error  shift 114
+	ID  shift 10
+	FLOATING_POINT  shift 21
+	INTEGER  shift 22
+	';'  shift 14
+	.  error
+
+	id  goto 23
+	semi  goto 115
+	expr  goto 116
+	number  goto 25
+
+
+state 93
+	right_brace : '}' .  (84)
+
+	.  reduce 84
+
+
+94: shift/reduce conflict (shift 1, reduce 8) on error
+94: shift/reduce conflict (shift 2, reduce 8) on DATA_TYPE
+state 94
+	declaration_list : declaration .  (8)
+	declaration_list : declaration . declaration_list  (9)
+
+	error  shift 1
+	DATA_TYPE  shift 2
+	ID  reduce 8
+	IF  reduce 8
+	ELSE  reduce 8
+	WHILE  reduce 8
+	FOR  reduce 8
+	DO  reduce 8
+	CONTINUE  reduce 8
+	BREAK  reduce 8
+	RETURN  reduce 8
+	FLOATING_POINT  reduce 8
+	INTEGER  reduce 8
+	'{'  reduce 8
+	'}'  reduce 8
+
+	declaration  goto 94
+	data_type  goto 95
+	declaration_list  goto 117
+
+
+state 95
+	declaration : data_type . id semi  (5)
+	declaration : data_type . id '=' expr semi  (6)
+	declaration : data_type . id left_bracket integer right_bracket semi  (7)
+
+	error  shift 9
+	ID  shift 10
+	.  error
+
+	id  goto 118
+
+
+state 96
+	stmt : expr . semi  (26)
+
+	error  shift 59
+	';'  shift 14
+	.  error
+
+	semi  goto 119
+
+
+state 97
+	stmt : declaration_list .  (21)
+
+	.  reduce 21
+
+
+state 98
+	stmt : compound_stmts .  (22)
+
+	.  reduce 22
+
+
+state 99
+	compound_stmts : left_brace right_brace .  (17)
+
+	.  reduce 17
+
+
+state 100
+	compound_stmts : left_brace stmt_list . right_brace  (18)
+
+	error  shift 120
+	'}'  shift 93
+	.  error
+
+	right_brace  goto 121
+
+
+101: shift/reduce conflict (shift 110, reduce 19) on error
+state 101
+	stmt_list : stmt . stmt_list  (20)
+	stmt_list : .  (19)
+
+	error  shift 110
+	ID  shift 10
+	DATA_TYPE  shift 2
+	IF  shift 86
+	WHILE  shift 87
+	FOR  shift 88
+	DO  shift 89
+	CONTINUE  shift 90
+	BREAK  shift 91
+	RETURN  shift 92
+	FLOATING_POINT  shift 21
+	INTEGER  shift 22
+	'{'  shift 79
+	'}'  reduce 19
+
+	declaration  goto 94
+	data_type  goto 95
+	id  goto 23
+	expr  goto 96
+	declaration_list  goto 97
+	compound_stmts  goto 98
+	left_brace  goto 81
+	stmt_list  goto 122
+	stmt  goto 101
+	conditional_stmt  goto 102
+	iteration_stmt  goto 103
+	jump_stmt  goto 104
+	number  goto 25
+
+
+state 102
+	stmt : conditional_stmt .  (23)
+
+	.  reduce 23
+
+
+state 103
+	stmt : iteration_stmt .  (24)
+
+	.  reduce 24
+
+
+state 104
+	stmt : jump_stmt .  (25)
+
+	.  reduce 25
+
+
+state 105
+	param_list : id comma param_list .  (16)
+
+	.  reduce 16
+
+
+state 106
+	left_parenthesis : error .  (79)
+
+	.  reduce 79
+
+
+state 107
+	conditional_stmt : IF left_parenthesis . expr right_parenthesis stmt  (27)
+	conditional_stmt : IF left_parenthesis . expr right_parenthesis stmt ELSE stmt  (28)
+
+	error  shift 20
+	ID  shift 10
+	FLOATING_POINT  shift 21
+	INTEGER  shift 22
+	.  error
+
+	id  goto 23
+	expr  goto 123
+	number  goto 25
+
+
+state 108
+	iteration_stmt : WHILE left_parenthesis . expr right_parenthesis stmt  (29)
+
+	error  shift 20
+	ID  shift 10
+	FLOATING_POINT  shift 21
+	INTEGER  shift 22
+	.  error
+
+	id  goto 23
+	expr  goto 124
+	number  goto 25
+
+
+state 109
+	iteration_stmt : FOR left_parenthesis . expr semi expr semi expr right_parenthesis stmt  (31)
+
+	error  shift 20
+	ID  shift 10
+	FLOATING_POINT  shift 21
+	INTEGER  shift 22
+	.  error
+
+	id  goto 23
+	expr  goto 125
+	number  goto 25
+
+
+110: reduce/reduce conflict (reduce 70, reduce 72) on error
+110: reduce/reduce conflict (reduce 70, reduce 77) on error
+110: reduce/reduce conflict (reduce 70, reduce 83) on error
+110: reduce/reduce conflict (reduce 72, reduce 77) on ADD_ASSIGN
+110: reduce/reduce conflict (reduce 72, reduce 77) on SUB_ASSIGN
+110: reduce/reduce conflict (reduce 72, reduce 77) on MUL_ASSIGN
+110: reduce/reduce conflict (reduce 72, reduce 77) on DIV_ASSIGN
+110: reduce/reduce conflict (reduce 72, reduce 77) on MOD_ASSIGN
+110: reduce/reduce conflict (reduce 72, reduce 77) on AND_ASSIGN
+110: reduce/reduce conflict (reduce 72, reduce 77) on XOR_ASSIGN
+110: reduce/reduce conflict (reduce 72, reduce 77) on OR_ASSIGN
+110: reduce/reduce conflict (reduce 72, reduce 77) on AND_OP
+110: reduce/reduce conflict (reduce 72, reduce 77) on OR_OP
+110: reduce/reduce conflict (reduce 72, reduce 77) on LE_OP
+110: reduce/reduce conflict (reduce 72, reduce 77) on GE_OP
+110: reduce/reduce conflict (reduce 70, reduce 83) on ID
+110: reduce/reduce conflict (reduce 72, reduce 77) on '='
+110: reduce/reduce conflict (reduce 72, reduce 77) on '<'
+110: reduce/reduce conflict (reduce 72, reduce 77) on '>'
+110: reduce/reduce conflict (reduce 72, reduce 77) on '!'
+110: reduce/reduce conflict (reduce 72, reduce 77) on '+'
+110: reduce/reduce conflict (reduce 72, reduce 77) on '-'
+110: reduce/reduce conflict (reduce 72, reduce 77) on '*'
+110: reduce/reduce conflict (reduce 72, reduce 77) on '/'
+110: reduce/reduce conflict (reduce 72, reduce 77) on '%'
+110: reduce/reduce conflict (reduce 72, reduce 77) on ';'
+state 110
+	data_type : error .  (70)
+	id : error .  (72)
+	number : error .  (77)
+	left_brace : error .  (83)
+
+	error  reduce 70
+	ADD_ASSIGN  reduce 72
+	SUB_ASSIGN  reduce 72
+	MUL_ASSIGN  reduce 72
+	DIV_ASSIGN  reduce 72
+	MOD_ASSIGN  reduce 72
+	AND_ASSIGN  reduce 72
+	XOR_ASSIGN  reduce 72
+	OR_ASSIGN  reduce 72
+	AND_OP  reduce 72
+	OR_OP  reduce 72
+	LE_OP  reduce 72
+	GE_OP  reduce 72
+	ID  reduce 70
+	DATA_TYPE  reduce 83
+	IF  reduce 83
+	WHILE  reduce 83
+	FOR  reduce 83
+	DO  reduce 83
+	CONTINUE  reduce 83
+	BREAK  reduce 83
+	RETURN  reduce 83
+	FLOATING_POINT  reduce 83
+	INTEGER  reduce 83
+	'='  reduce 72
+	'<'  reduce 72
+	'>'  reduce 72
+	'!'  reduce 72
+	'+'  reduce 72
+	'-'  reduce 72
+	'*'  reduce 72
+	'/'  reduce 72
+	'%'  reduce 72
+	';'  reduce 72
+	'('  reduce 72
+	'{'  reduce 83
+	'}'  reduce 83
+
+
+state 111
+	iteration_stmt : DO stmt . WHILE left_parenthesis expr right_parenthesis semi  (30)
+
+	WHILE  shift 126
+	.  error
+
+
+state 112
+	jump_stmt : CONTINUE semi .  (32)
+
+	.  reduce 32
+
+
+state 113
+	jump_stmt : BREAK semi .  (33)
+
+	.  reduce 33
+
+
+114: reduce/reduce conflict (reduce 68, reduce 72) on error
+114: reduce/reduce conflict (reduce 68, reduce 77) on error
+114: reduce/reduce conflict (reduce 72, reduce 77) on ADD_ASSIGN
+114: reduce/reduce conflict (reduce 72, reduce 77) on SUB_ASSIGN
+114: reduce/reduce conflict (reduce 72, reduce 77) on MUL_ASSIGN
+114: reduce/reduce conflict (reduce 72, reduce 77) on DIV_ASSIGN
+114: reduce/reduce conflict (reduce 72, reduce 77) on MOD_ASSIGN
+114: reduce/reduce conflict (reduce 72, reduce 77) on AND_ASSIGN
+114: reduce/reduce conflict (reduce 72, reduce 77) on XOR_ASSIGN
+114: reduce/reduce conflict (reduce 72, reduce 77) on OR_ASSIGN
+114: reduce/reduce conflict (reduce 72, reduce 77) on AND_OP
+114: reduce/reduce conflict (reduce 72, reduce 77) on OR_OP
+114: reduce/reduce conflict (reduce 72, reduce 77) on LE_OP
+114: reduce/reduce conflict (reduce 72, reduce 77) on GE_OP
+114: reduce/reduce conflict (reduce 72, reduce 77) on '='
+114: reduce/reduce conflict (reduce 72, reduce 77) on '<'
+114: reduce/reduce conflict (reduce 72, reduce 77) on '>'
+114: reduce/reduce conflict (reduce 72, reduce 77) on '!'
+114: reduce/reduce conflict (reduce 72, reduce 77) on '+'
+114: reduce/reduce conflict (reduce 72, reduce 77) on '-'
+114: reduce/reduce conflict (reduce 72, reduce 77) on '*'
+114: reduce/reduce conflict (reduce 72, reduce 77) on '/'
+114: reduce/reduce conflict (reduce 72, reduce 77) on '%'
+114: reduce/reduce conflict (reduce 72, reduce 77) on ';'
+state 114
+	semi : error .  (68)
+	id : error .  (72)
+	number : error .  (77)
+
+	error  reduce 68
+	ADD_ASSIGN  reduce 72
+	SUB_ASSIGN  reduce 72
+	MUL_ASSIGN  reduce 72
+	DIV_ASSIGN  reduce 72
+	MOD_ASSIGN  reduce 72
+	AND_ASSIGN  reduce 72
+	XOR_ASSIGN  reduce 72
+	OR_ASSIGN  reduce 72
+	AND_OP  reduce 72
+	OR_OP  reduce 72
+	LE_OP  reduce 72
+	GE_OP  reduce 72
+	ID  reduce 68
+	DATA_TYPE  reduce 68
+	IF  reduce 68
+	ELSE  reduce 68
+	WHILE  reduce 68
+	FOR  reduce 68
+	DO  reduce 68
+	CONTINUE  reduce 68
+	BREAK  reduce 68
+	RETURN  reduce 68
+	FLOATING_POINT  reduce 68
+	INTEGER  reduce 68
+	'='  reduce 72
+	'<'  reduce 72
+	'>'  reduce 72
+	'!'  reduce 72
+	'+'  reduce 72
+	'-'  reduce 72
+	'*'  reduce 72
+	'/'  reduce 72
+	'%'  reduce 72
+	';'  reduce 72
+	'('  reduce 72
+	'{'  reduce 68
+	'}'  reduce 68
+
+
+state 115
+	jump_stmt : RETURN semi .  (34)
+
+	.  reduce 34
+
+
+state 116
+	jump_stmt : RETURN expr . semi  (35)
+
+	error  shift 59
+	';'  shift 14
+	.  error
+
+	semi  goto 127
+
+
+state 117
+	declaration_list : declaration declaration_list .  (9)
+
+	.  reduce 9
+
+
+state 118
+	declaration : data_type id . semi  (5)
+	declaration : data_type id . '=' expr semi  (6)
+	declaration : data_type id . left_bracket integer right_bracket semi  (7)
+
+	error  shift 128
+	'='  shift 13
+	';'  shift 14
+	'['  shift 16
+	.  error
+
+	semi  goto 17
+	left_bracket  goto 18
+
+
+state 119
+	stmt : expr semi .  (26)
+
+	.  reduce 26
+
+
+state 120
+	right_brace : error .  (85)
+
+	.  reduce 85
+
+
+state 121
+	compound_stmts : left_brace stmt_list right_brace .  (18)
+
+	.  reduce 18
+
+
+state 122
+	stmt_list : stmt stmt_list .  (20)
+
+	.  reduce 20
+
+
+state 123
+	conditional_stmt : IF left_parenthesis expr . right_parenthesis stmt  (27)
+	conditional_stmt : IF left_parenthesis expr . right_parenthesis stmt ELSE stmt  (28)
+
+	error  shift 67
+	')'  shift 68
+	.  error
+
+	right_parenthesis  goto 129
+
+
+state 124
+	iteration_stmt : WHILE left_parenthesis expr . right_parenthesis stmt  (29)
+
+	error  shift 67
+	')'  shift 68
+	.  error
+
+	right_parenthesis  goto 130
+
+
+state 125
+	iteration_stmt : FOR left_parenthesis expr . semi expr semi expr right_parenthesis stmt  (31)
+
+	error  shift 59
+	';'  shift 14
+	.  error
+
+	semi  goto 131
+
+
+state 126
+	iteration_stmt : DO stmt WHILE . left_parenthesis expr right_parenthesis semi  (30)
+
+	error  shift 106
+	'('  shift 15
+	.  error
+
+	left_parenthesis  goto 132
+
+
+state 127
+	jump_stmt : RETURN expr semi .  (35)
+
+	.  reduce 35
+
+
+128: reduce/reduce conflict (reduce 68, reduce 87) on error
+128: reduce/reduce conflict (reduce 68, reduce 87) on INTEGER
+state 128
+	semi : error .  (68)
+	left_bracket : error .  (87)
+
+	.  reduce 68
+
+
+state 129
+	conditional_stmt : IF left_parenthesis expr right_parenthesis . stmt  (27)
+	conditional_stmt : IF left_parenthesis expr right_parenthesis . stmt ELSE stmt  (28)
+
+	error  shift 110
+	ID  shift 10
+	DATA_TYPE  shift 2
+	IF  shift 86
+	WHILE  shift 87
+	FOR  shift 88
+	DO  shift 89
+	CONTINUE  shift 90
+	BREAK  shift 91
+	RETURN  shift 92
+	FLOATING_POINT  shift 21
+	INTEGER  shift 22
+	'{'  shift 79
+	.  error
+
+	declaration  goto 94
+	data_type  goto 95
+	id  goto 23
+	expr  goto 96
+	declaration_list  goto 97
+	compound_stmts  goto 98
+	left_brace  goto 81
+	stmt  goto 133
+	conditional_stmt  goto 102
+	iteration_stmt  goto 103
+	jump_stmt  goto 104
+	number  goto 25
+
+
+state 130
+	iteration_stmt : WHILE left_parenthesis expr right_parenthesis . stmt  (29)
+
+	error  shift 110
+	ID  shift 10
+	DATA_TYPE  shift 2
+	IF  shift 86
+	WHILE  shift 87
+	FOR  shift 88
+	DO  shift 89
+	CONTINUE  shift 90
+	BREAK  shift 91
+	RETURN  shift 92
+	FLOATING_POINT  shift 21
+	INTEGER  shift 22
+	'{'  shift 79
+	.  error
+
+	declaration  goto 94
+	data_type  goto 95
+	id  goto 23
+	expr  goto 96
+	declaration_list  goto 97
+	compound_stmts  goto 98
+	left_brace  goto 81
+	stmt  goto 134
+	conditional_stmt  goto 102
+	iteration_stmt  goto 103
+	jump_stmt  goto 104
+	number  goto 25
+
+
+state 131
+	iteration_stmt : FOR left_parenthesis expr semi . expr semi expr right_parenthesis stmt  (31)
+
+	error  shift 20
+	ID  shift 10
+	FLOATING_POINT  shift 21
+	INTEGER  shift 22
+	.  error
+
+	id  goto 23
+	expr  goto 135
+	number  goto 25
+
+
+state 132
+	iteration_stmt : DO stmt WHILE left_parenthesis . expr right_parenthesis semi  (30)
+
+	error  shift 20
+	ID  shift 10
+	FLOATING_POINT  shift 21
+	INTEGER  shift 22
+	.  error
+
+	id  goto 23
+	expr  goto 136
+	number  goto 25
+
+
+133: shift/reduce conflict (shift 137, reduce 27) on ELSE
+state 133
+	conditional_stmt : IF left_parenthesis expr right_parenthesis stmt .  (27)
+	conditional_stmt : IF left_parenthesis expr right_parenthesis stmt . ELSE stmt  (28)
+
+	ELSE  shift 137
+	error  reduce 27
+	ID  reduce 27
+	DATA_TYPE  reduce 27
+	IF  reduce 27
+	WHILE  reduce 27
+	FOR  reduce 27
+	DO  reduce 27
+	CONTINUE  reduce 27
+	BREAK  reduce 27
+	RETURN  reduce 27
+	FLOATING_POINT  reduce 27
+	INTEGER  reduce 27
+	'{'  reduce 27
+	'}'  reduce 27
+
+
+state 134
+	iteration_stmt : WHILE left_parenthesis expr right_parenthesis stmt .  (29)
+
+	.  reduce 29
+
+
+state 135
+	iteration_stmt : FOR left_parenthesis expr semi expr . semi expr right_parenthesis stmt  (31)
+
+	error  shift 59
+	';'  shift 14
+	.  error
+
+	semi  goto 138
+
+
+state 136
+	iteration_stmt : DO stmt WHILE left_parenthesis expr . right_parenthesis semi  (30)
+
+	error  shift 67
+	')'  shift 68
+	.  error
+
+	right_parenthesis  goto 139
+
+
+state 137
+	conditional_stmt : IF left_parenthesis expr right_parenthesis stmt ELSE . stmt  (28)
+
+	error  shift 110
+	ID  shift 10
+	DATA_TYPE  shift 2
+	IF  shift 86
+	WHILE  shift 87
+	FOR  shift 88
+	DO  shift 89
+	CONTINUE  shift 90
+	BREAK  shift 91
+	RETURN  shift 92
+	FLOATING_POINT  shift 21
+	INTEGER  shift 22
+	'{'  shift 79
+	.  error
+
+	declaration  goto 94
+	data_type  goto 95
+	id  goto 23
+	expr  goto 96
+	declaration_list  goto 97
+	compound_stmts  goto 98
+	left_brace  goto 81
+	stmt  goto 140
+	conditional_stmt  goto 102
+	iteration_stmt  goto 103
+	jump_stmt  goto 104
+	number  goto 25
+
+
+state 138
+	iteration_stmt : FOR left_parenthesis expr semi expr semi . expr right_parenthesis stmt  (31)
+
+	error  shift 20
+	ID  shift 10
+	FLOATING_POINT  shift 21
+	INTEGER  shift 22
+	.  error
+
+	id  goto 23
+	expr  goto 141
+	number  goto 25
+
+
+state 139
+	iteration_stmt : DO stmt WHILE left_parenthesis expr right_parenthesis . semi  (30)
+
+	error  shift 59
+	';'  shift 14
+	.  error
+
+	semi  goto 142
+
+
+state 140
+	conditional_stmt : IF left_parenthesis expr right_parenthesis stmt ELSE stmt .  (28)
+
+	.  reduce 28
+
+
+state 141
+	iteration_stmt : FOR left_parenthesis expr semi expr semi expr . right_parenthesis stmt  (31)
+
+	error  shift 67
+	')'  shift 68
+	.  error
+
+	right_parenthesis  goto 143
+
+
+state 142
+	iteration_stmt : DO stmt WHILE left_parenthesis expr right_parenthesis semi .  (30)
+
+	.  reduce 30
+
+
+state 143
+	iteration_stmt : FOR left_parenthesis expr semi expr semi expr right_parenthesis . stmt  (31)
+
+	error  shift 110
+	ID  shift 10
+	DATA_TYPE  shift 2
+	IF  shift 86
+	WHILE  shift 87
+	FOR  shift 88
+	DO  shift 89
+	CONTINUE  shift 90
+	BREAK  shift 91
+	RETURN  shift 92
+	FLOATING_POINT  shift 21
+	INTEGER  shift 22
+	'{'  shift 79
+	.  error
+
+	declaration  goto 94
+	data_type  goto 95
+	id  goto 23
+	expr  goto 96
+	declaration_list  goto 97
+	compound_stmts  goto 98
+	left_brace  goto 81
+	stmt  goto 144
+	conditional_stmt  goto 102
+	iteration_stmt  goto 103
+	jump_stmt  goto 104
+	number  goto 25
+
+
+state 144
+	iteration_stmt : FOR left_parenthesis expr semi expr semi expr right_parenthesis stmt .  (31)
+
+	.  reduce 31
+
+
+Rules never reduced:
+	number : error  (77)
+
+
+State 12 contains 3 reduce/reduce conflicts.
+State 19 contains 1 shift/reduce conflict.
+State 20 contains 24 reduce/reduce conflicts.
+State 23 contains 1 shift/reduce conflict.
+State 25 contains 1 shift/reduce conflict.
+State 31 contains 2 reduce/reduce conflicts.
+State 53 contains 1 shift/reduce conflict.
+State 66 contains 1 shift/reduce conflict.
+State 70 contains 1 shift/reduce conflict.
+State 77 contains 1 shift/reduce conflict.
+State 81 contains 2 shift/reduce conflicts.
+State 82 contains 1 shift/reduce conflict.
+State 85 contains 40 reduce/reduce conflicts.
+State 94 contains 2 shift/reduce conflicts.
+State 101 contains 1 shift/reduce conflict.
+State 110 contains 26 reduce/reduce conflicts.
+State 114 contains 24 reduce/reduce conflicts.
+State 128 contains 2 reduce/reduce conflicts.
+State 133 contains 1 shift/reduce conflict.
+
+
+52 terminals, 32 nonterminals
+92 grammar rules, 145 states
